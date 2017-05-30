@@ -1,0 +1,50 @@
+{
+  "name": "ass-compiler",
+  "version": "0.0.0",
+  "description": "Parses and compiles ASS subtitle format to easy-to-use data structure.",
+  "main": "dist/ass-compiler.js",
+  "modulue": "src/index.js",
+  "scripts": {
+    "lint": "eslint src test",
+    "preunit": "rollup -c rollup.config.test.js",
+    "unit": "mocha temp/test.js",
+    "cover": "cross-env ISTANBUL_REPORT_DIR=coverage ISTANBUL_REPORTERS=text-summary,lcov npm run unit -- --reporter=mocha-istanbul",
+    "test": "npm run lint && npm run unit",
+    "bundle": "rollup -c",
+    "minify": "uglifyjs dist/ass-compiler.js -m -o dist/ass-compiler.min.js",
+    "build": "npm run bundle && npm run minify",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A ./dist",
+    "postversion": "git push && git push --tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weizhenye/ass-compiler.git"
+  },
+  "keywords": [
+    "ass",
+    "ssa",
+    "subtitle",
+    "compiler",
+    "parser"
+  ],
+  "author": "Zhenye Wei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/weizhenye/ass-compiler/issues"
+  },
+  "homepage": "https://github.com/weizhenye/ass-compiler",
+  "devDependencies": {
+    "chai": "^4.0.0",
+    "cross-env": "^5.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.3.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "mocha-istanbul": "^0.3.0",
+    "rollup": "^0.41.6",
+    "rollup-plugin-istanbul": "^1.1.0",
+    "uglify-js": "^3.0.13"
+  }
+}
