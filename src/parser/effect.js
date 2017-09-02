@@ -1,5 +1,5 @@
 function parseEffect(text) {
-  var param = text
+  const param = text
     .toLowerCase()
     .trim()
     .split(/\s*;\s*/);

@@ -3,17 +3,17 @@ import parseText from './text';
 import parseTime from './time';
 
 function parseDialogue(text, format) {
-  var fields = text.split(',');
+  let fields = text.split(',');
   if (fields.length > format.length) {
-    var textField = fields.slice(format.length - 1).join();
+    const textField = fields.slice(format.length - 1).join();
     fields = fields.slice(0, format.length - 1);
     fields.push(textField);
   }
 
-  var dia = {};
-  for (var i = 0; i < fields.length; i++) {
-    var fmt = format[i];
-    var fld = fields[i].trim();
+  const dia = {};
+  for (let i = 0; i < fields.length; i++) {
+    const fmt = format[i];
+    const fld = fields[i].trim();
     switch (fmt) {
       case 'Layer':
       case 'MarginL':

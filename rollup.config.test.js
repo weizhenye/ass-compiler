@@ -1,9 +1,11 @@
 import istanbul from 'rollup-plugin-istanbul';
 
 export default {
-  entry: 'test/test.js',
-  format: 'cjs',
-  dest: 'temp/test.js',
+  input: 'test/test.js',
+  output: {
+    file: 'temp/test.js',
+    format: 'cjs',
+  },
   external: ['chai'],
   plugins: [
     istanbul({ exclude: ['test/**/*'] }),

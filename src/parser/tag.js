@@ -1,17 +1,17 @@
 import parseDrawing from './drawing';
 
 function parseTag(text) {
-  var tag = {};
-  var numTags = [
+  const tag = {};
+  const numTags = [
     'b', 'i', 'u', 's', 'fsp',
     'k', 'K', 'kf', 'ko', 'kt',
     'fe', 'q', 'p', 'pbo', 'a', 'an',
     'fscx', 'fscy', 'fax', 'fay', 'frx', 'fry', 'frz', 'fr',
     'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',
   ];
-  for (var i = 0; i < numTags.length; i++) {
-    var nt = numTags[i];
-    var regex = new RegExp('^' + nt + '-?\\d');
+  for (let i = 0; i < numTags.length; i++) {
+    const nt = numTags[i];
+    const regex = new RegExp(`^${nt}-?\\d`);
     if (regex.test(text)) {
       tag[nt] = text.slice(nt.length) * 1;
     }
@@ -19,14 +19,14 @@ function parseTag(text) {
   if (/^fn/.test(text)) tag.fn = text.slice(2);
   if (/^r/.test(text)) tag.r = text.slice(1);
   if (/^fs[\d+-]/.test(text)) tag.fs = text.slice(2);
-  var p = [];
+  let p = [];
   if (/^\d?c&?H?[0-9a-f]+/i.test(text)) {
     p = text.match(/^(\d?)c&?H?(\w+)/);
-    tag['c' + (p[1] || '1')] = ('000000' + p[2]).slice(-6);
+    tag[`c${p[1] || 1}`] = `000000${p[2]}`.slice(-6);
   }
   if (/^\da&?H?[0-9a-f]+/i.test(text)) {
     p = text.match(/^(\d)a&?H?(\w\w)/);
-    tag['a' + p[1]] = p[2];
+    tag[`a${p[1]}`] = p[2];
   }
   if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
     tag.alpha = text.match(/^alpha&?H?(\w\w)/)[1];
@@ -64,9 +64,7 @@ function parseTag(text) {
     p = text
       .match(/^t\((.*)\)/)[1]
       .trim()
-      .replace(/\\.*/, function (x) {
-        return x.replace(/,/g, '\n');
-      })
+      .replace(/\\.*/, x => x.replace(/,/g, '\n'))
       .split(/\s*,\s*/);
     if (!p[0]) return tag;
     tag.t = {

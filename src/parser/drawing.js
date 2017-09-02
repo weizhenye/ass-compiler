@@ -5,9 +5,7 @@ function parseDrawing(text) {
     .trim()
     .replace(/\s+/g, ' ')
     .split(/\s(?=[mnlbspc])/)
-    .map(function (cmd) {
-      return cmd.split(' ');
-    });
+    .map(cmd => cmd.split(' '));
 }
 
 export default parseDrawing;

@@ -3,16 +3,16 @@ import parseFormat from './format';
 import parseStyle from './style';
 
 function parse(text) {
-  var tree = {
+  const tree = {
     info: {},
     styles: { format: [], style: [] },
     events: { format: [], comment: [], dialogue: [] },
   };
-  var p = [];
-  var lines = text.split(/\r?\n/);
-  var state = 0;
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i].trim();
+  let p = [];
+  const lines = text.split(/\r?\n/);
+  let state = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
     if (/^;/.test(line)) continue;
 
     if (/^\[Script Info\]/i.test(line)) state = 1;
