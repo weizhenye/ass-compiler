@@ -22,7 +22,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.00,0:00:05.00,Default,,0,0,0,,text
 `;
 
-describe('ASS', () => {
+describe('ASS parser', () => {
   it('should parse ASS', () => {
     expect(parse(text)).to.deep.equal({
       info: {

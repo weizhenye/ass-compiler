@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import parseText from '../../src/parser/text';
 
-describe('text', () => {
+describe('text parser', () => {
   it('should parse text', () => {
     expect(parseText('text')).to.deep.equal({
       raw: 'text',

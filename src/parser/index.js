@@ -8,7 +8,6 @@ function parse(text) {
     styles: { format: [], style: [] },
     events: { format: [], comment: [], dialogue: [] },
   };
-  let p = [];
   const lines = text.split(/\r?\n/);
   let state = 0;
   for (let i = 0; i < lines.length; i++) {
@@ -23,8 +22,8 @@ function parse(text) {
     if (state === 0) continue;
     if (state === 1) {
       if (/:/.test(line)) {
-        p = line.match(/(.*?)\s*:\s*(.*)/);
-        tree.info[p[1]] = p[2];
+        const [, key, value] = line.match(/(.*?)\s*:\s*(.*)/);
+        tree.info[key] = value;
       }
     }
     if (state === 2) {
@@ -40,10 +39,8 @@ function parse(text) {
         tree.events.format = parseFormat(line);
       }
       if (/^(?:Comment|Dialogue)\s*:/i.test(line)) {
-        p = line.match(/^(\w+?)\s*:\s*(.*)/i);
-        tree.events[p[1].toLowerCase()].push(
-          parseDialogue(p[2], tree.events.format)
-        );
+        const [, key, value] = line.match(/^(\w+?)\s*:\s*(.*)/i);
+        tree.events[key.toLowerCase()].push(parseDialogue(value, tree.events.format));
       }
     }
   }

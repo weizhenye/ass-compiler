@@ -19,27 +19,26 @@ function parseTag(text) {
   if (/^fn/.test(text)) tag.fn = text.slice(2);
   if (/^r/.test(text)) tag.r = text.slice(1);
   if (/^fs[\d+-]/.test(text)) tag.fs = text.slice(2);
-  let p = [];
   if (/^\d?c&?H?[0-9a-f]+/i.test(text)) {
-    p = text.match(/^(\d?)c&?H?(\w+)/);
-    tag[`c${p[1] || 1}`] = `000000${p[2]}`.slice(-6);
+    const [, num, color] = text.match(/^(\d?)c&?H?(\w+)/);
+    tag[`c${num || 1}`] = `000000${color}`.slice(-6);
   }
   if (/^\da&?H?[0-9a-f]+/i.test(text)) {
-    p = text.match(/^(\d)a&?H?(\w\w)/);
-    tag[`a${p[1]}`] = p[2];
+    const [, num, alpha] = text.match(/^(\d)a&?H?(\w\w)/);
+    tag[`a${num}`] = alpha;
   }
   if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
-    tag.alpha = text.match(/^alpha&?H?(\w\w)/)[1];
+    [, tag.alpha] = text.match(/^alpha&?H?(\w\w)/);
   }
   if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
-    p = text.match(/^(\w+)\((.*?)\)/);
-    tag[p[1]] = p[2]
+    const [, key, value] = text.match(/^(\w+)\((.*?)\)/);
+    tag[key] = value
       .trim()
       .split(/\s*,\s*/)
       .map(Number);
   }
   if (/^i?clip/.test(text)) {
-    p = text
+    const p = text
       .match(/^i?clip\((.*)\)/)[1]
       .trim()
       .split(/\s*,\s*/);
@@ -61,7 +60,7 @@ function parseTag(text) {
     }
   }
   if (/^t\(/.test(text)) {
-    p = text
+    const p = text
       .match(/^t\((.*)\)/)[1]
       .trim()
       .replace(/\\.*/, x => x.replace(/,/g, '\n'))

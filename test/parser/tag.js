@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import parseTag from '../../src/parser/tag';
 
-describe('tag', () => {
+describe('tag parser', () => {
   it('should parse b,i,u,s', () => {
     ['b', 'i', 'u', 's'].forEach((tag) => {
       expect(parseTag(`${tag}0`)).to.deep.equal({ [tag]: 0 });

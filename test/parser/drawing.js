@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import parseDrawing from '../../src/parser/drawing';
 
-describe('drawing', () => {
+describe('drawing parser', () => {
   it('should parse drawing', () => {
     expect(parseDrawing('m0 0l 1 0 n 2 2')).to.deep.equal([
       ['m', '0', '0'],

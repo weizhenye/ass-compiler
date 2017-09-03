@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import parseEffect from '../../src/parser/effect';
 
-describe('effect', () => {
+describe('effect parser', () => {
   it('should parse Scroll up/down', () => {
     expect(parseEffect('Scroll up;40;320;5;80')).to.deep.equal({
       name: 'scroll up',

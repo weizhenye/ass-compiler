@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import parseTags from '../../src/parser/tags';
 
-describe('tags', () => {
+describe('tags parser', () => {
   it('should parse tags', () => {
     expect(parseTags('\\frx30\\fry60\\frz90')).to.deep.equal([
       { frx: 30 },

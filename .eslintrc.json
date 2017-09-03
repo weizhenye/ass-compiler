@@ -8,9 +8,14 @@
       "exports": "always-multiline",
       "functions": "never"
     }],
+    "function-paren-newline": ["error", "consistent"],
     "no-bitwise": 0,
     "no-continue": 0,
     "no-mixed-operators": 0,
-    "no-plusplus": 0
+    "no-plusplus": 0,
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "multiline": true, "consistent": true },
+      "ObjectPattern": { "multiline": true, "consistent": true }
+    }]
   }
 }

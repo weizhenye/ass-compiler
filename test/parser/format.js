@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import parseFormat from '../../src/parser/format';
 
-describe('format', () => {
+describe('format parser', () => {
   let text = '';
   let result = [];
 
