@@ -8,3 +8,4 @@ import './parser/tag';
 import './parser/tags';
 import './parser/text';
 import './parser/time';
+import './compiler/drawing';
