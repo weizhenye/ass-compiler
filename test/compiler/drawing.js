@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import parseDrawing from '../../src/parser/drawing';
+import { parseDrawing } from '../../src/parser/drawing';
 import { s2b, toSVGPath, compileDrawing } from '../../src/compiler/drawing';
 
 describe('drawing compiler', () => {

@@ -1,7 +1,7 @@
-import parseDrawing from './drawing';
-import parseTags from './tags';
+import { parseDrawing } from './drawing';
+import { parseTags } from './tags';
 
-function parseText(text) {
+export function parseText(text) {
   const pairs = text.split(/{([^{}]*?)}/);
   const parsed = [];
   if (pairs[0].length) {
@@ -23,5 +23,3 @@ function parseText(text) {
     parsed,
   };
 }
-
-export default parseText;

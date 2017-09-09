@@ -1,8 +1,8 @@
-import parseEffect from './effect';
-import parseText from './text';
-import parseTime from './time';
+import { parseEffect } from './effect';
+import { parseText } from './text';
+import { parseTime } from './time';
 
-function parseDialogue(text, format) {
+export function parseDialogue(text, format) {
   let fields = text.split(',');
   if (fields.length > format.length) {
     const textField = fields.slice(format.length - 1).join();
@@ -38,5 +38,3 @@ function parseDialogue(text, format) {
 
   return dia;
 }
-
-export default parseDialogue;

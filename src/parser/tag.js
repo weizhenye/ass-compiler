@@ -1,14 +1,15 @@
-import parseDrawing from './drawing';
+import { parseDrawing } from './drawing';
 
-function parseTag(text) {
+const numTags = [
+  'b', 'i', 'u', 's', 'fsp',
+  'k', 'K', 'kf', 'ko', 'kt',
+  'fe', 'q', 'p', 'pbo', 'a', 'an',
+  'fscx', 'fscy', 'fax', 'fay', 'frx', 'fry', 'frz', 'fr',
+  'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',
+];
+
+export function parseTag(text) {
   const tag = {};
-  const numTags = [
-    'b', 'i', 'u', 's', 'fsp',
-    'k', 'K', 'kf', 'ko', 'kt',
-    'fe', 'q', 'p', 'pbo', 'a', 'an',
-    'fscx', 'fscy', 'fax', 'fay', 'frx', 'fry', 'frz', 'fr',
-    'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',
-  ];
   for (let i = 0; i < numTags.length; i++) {
     const nt = numTags[i];
     const regex = new RegExp(`^${nt}-?\\d`);
@@ -92,5 +93,3 @@ function parseTag(text) {
 
   return tag;
 }
-
-export default parseTag;

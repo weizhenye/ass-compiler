@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import parseTime from '../../src/parser/time';
+import { parseTime } from '../../src/parser/time';
 
 describe('time parser', () => {
   it('should parse time', () => {

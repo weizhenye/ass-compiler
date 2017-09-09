@@ -1,12 +1,11 @@
 import { expect } from 'chai';
-import parseFormat from '../../src/parser/format';
+import { parseFormat } from '../../src/parser/format';
 
 describe('format parser', () => {
   let text = '';
   let result = [];
 
   it('should parse format', () => {
-    /* eslint max-len: 0 */
     text = 'Format: Layer, Start,End ,Style , Name,  MarginL  , MarginR, MarginV, Effect, Text';
     result = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];
     expect(parseFormat(text)).to.deep.equal(result);

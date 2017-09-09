@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import parseTags from '../../src/parser/tags';
+import { parseTags } from '../../src/parser/tags';
 
 describe('tags parser', () => {
   it('should parse tags', () => {

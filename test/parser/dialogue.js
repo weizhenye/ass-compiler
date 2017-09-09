@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import parseDialogue from '../../src/parser/dialogue';
+import { parseDialogue } from '../../src/parser/dialogue';
 
 describe('dialogue parser', () => {
-  /* eslint max-len: 0 */
   const format = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];
   let text = '';
 

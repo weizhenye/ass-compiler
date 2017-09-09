@@ -1,4 +1,4 @@
-function parseDrawing(text) {
+export function parseDrawing(text) {
   return text
     .toLowerCase()
     .replace(/([mnlbspc])/g, ' $1 ')
@@ -7,5 +7,3 @@ function parseDrawing(text) {
     .split(/\s(?=[mnlbspc])/)
     .map(cmd => cmd.split(' '));
 }
-
-export default parseDrawing;

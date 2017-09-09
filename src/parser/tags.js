@@ -1,6 +1,6 @@
-import parseTag from './tag';
+import { parseTag } from './tag';
 
-function parseTags(text) {
+export function parseTags(text) {
   return text
     .replace(/\((?:[^()]+|\([^()]*\))*\)/g, x => x.replace(/\\/g, '\n'))
     .split(/\\/)
@@ -8,5 +8,3 @@ function parseTags(text) {
     .map(x => x.replace(/\n/g, '\\'))
     .map(parseTag);
 }
-
-export default parseTags;

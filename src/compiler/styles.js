@@ -3,7 +3,7 @@ function parseStyleColor(color) {
   return [a || '00', c];
 }
 
-export default function compileStyles({ info, style, format }) {
+export function compileStyles({ info, style, format }) {
   const result = {};
   for (let i = 0; i < style.length; i++) {
     const stl = style[i];

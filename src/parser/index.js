@@ -1,8 +1,8 @@
-import parseDialogue from './dialogue';
-import parseFormat from './format';
-import parseStyle from './style';
+import { parseDialogue } from './dialogue';
+import { parseFormat } from './format';
+import { parseStyle } from './style';
 
-function parse(text) {
+export function parse(text) {
   const tree = {
     info: {},
     styles: { format: [], style: [] },
@@ -47,5 +47,3 @@ function parse(text) {
 
   return tree;
 }
-
-export default parse;

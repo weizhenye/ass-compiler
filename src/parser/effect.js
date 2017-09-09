@@ -1,4 +1,4 @@
-function parseEffect(text) {
+export function parseEffect(text) {
   const param = text
     .toLowerCase()
     .trim()
@@ -22,5 +22,3 @@ function parseEffect(text) {
   }
   return null;
 }
-
-export default parseEffect;
