@@ -9,3 +9,4 @@ import './parser/tags';
 import './parser/text';
 import './parser/time';
 import './compiler/drawing';
+import './compiler/styles';
