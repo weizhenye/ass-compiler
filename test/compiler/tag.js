@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { compileTag } from '../../src/compiler/tag';
+import { compileTag } from '../../src/compiler/tag.js';
 
 describe('tag compiler', () => {
   it('should ignore empty tag', () => {

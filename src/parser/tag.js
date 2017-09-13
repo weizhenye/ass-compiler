@@ -1,4 +1,4 @@
-import { parseDrawing } from './drawing';
+import { parseDrawing } from './drawing.js';
 
 const numTags = [
   'b', 'i', 'u', 's', 'fsp',

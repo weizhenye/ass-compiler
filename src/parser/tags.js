@@ -1,4 +1,4 @@
-import { parseTag } from './tag';
+import { parseTag } from './tag.js';
 
 export function parseTags(text) {
   return text

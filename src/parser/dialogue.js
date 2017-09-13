@@ -1,6 +1,6 @@
-import { parseEffect } from './effect';
-import { parseText } from './text';
-import { parseTime } from './time';
+import { parseEffect } from './effect.js';
+import { parseText } from './text.js';
+import { parseTime } from './time.js';
 
 export function parseDialogue(text, format) {
   let fields = text.split(',');

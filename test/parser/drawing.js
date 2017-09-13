@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseDrawing } from '../../src/parser/drawing';
+import { parseDrawing } from '../../src/parser/drawing.js';
 
 describe('drawing parser', () => {
   it('should parse drawing', () => {

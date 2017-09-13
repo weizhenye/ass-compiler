@@ -1,5 +1,5 @@
-import { compileDrawing } from './drawing';
-import { assign } from '../utils';
+import { compileDrawing } from './drawing.js';
+import { assign } from '../utils.js';
 
 const tTags = [
   'fs', 'clip',

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { parseDrawing } from '../../src/parser/drawing';
-import { s2b, toSVGPath, compileDrawing } from '../../src/compiler/drawing';
+import { parseDrawing } from '../../src/parser/drawing.js';
+import { s2b, toSVGPath, compileDrawing } from '../../src/compiler/drawing.js';
 
 describe('drawing compiler', () => {
   it('should convert instructions to SVG Path', () => {

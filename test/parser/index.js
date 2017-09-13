@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parse } from '../../src/parser/index';
+import { parse } from '../../src/parser/index.js';
 
 const text = `
 [Script Info]

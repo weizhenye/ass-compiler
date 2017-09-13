@@ -1,5 +1,5 @@
-import { parseDrawing } from './drawing';
-import { parseTags } from './tags';
+import { parseDrawing } from './drawing.js';
+import { parseTags } from './tags.js';
 
 export function parseText(text) {
   const pairs = text.split(/{([^{}]*?)}/);

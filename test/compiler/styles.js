@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { compileStyles } from '../../src/compiler/styles';
+import { compileStyles } from '../../src/compiler/styles.js';
 
 describe('styles compiler', () => {
   const style = [['Default', 'Arial', '20', '&H00FFFFFF', '&H000000FF', '&H000000', '&H00000000', '-1', '0', '0', '0', '100', '100', '0', '0', '1', '2', '2', '2', '10', '10', '10', '0']];

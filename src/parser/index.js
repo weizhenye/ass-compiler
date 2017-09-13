@@ -1,6 +1,6 @@
-import { parseDialogue } from './dialogue';
-import { parseFormat } from './format';
-import { parseStyle } from './style';
+import { parseDialogue } from './dialogue.js';
+import { parseFormat } from './format.js';
+import { parseStyle } from './style.js';
 
 export function parse(text) {
   const tree = {

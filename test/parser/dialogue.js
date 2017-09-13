@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseDialogue } from '../../src/parser/dialogue';
+import { parseDialogue } from '../../src/parser/dialogue.js';
 
 describe('dialogue parser', () => {
   const format = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];

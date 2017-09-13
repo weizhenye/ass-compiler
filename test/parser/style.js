@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseStyle } from '../../src/parser/style';
+import { parseStyle } from '../../src/parser/style.js';
 
 describe('style parser', () => {
   let text = '';

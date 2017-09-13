@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseEffect } from '../../src/parser/effect';
+import { parseEffect } from '../../src/parser/effect.js';
 
 describe('effect parser', () => {
   it('should parse Scroll up/down', () => {

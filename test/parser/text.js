@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseText } from '../../src/parser/text';
+import { parseText } from '../../src/parser/text.js';
 
 describe('text parser', () => {
   it('should parse text', () => {

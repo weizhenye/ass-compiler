@@ -17,6 +17,7 @@
       "ObjectExpression": { "multiline": true, "consistent": true },
       "ObjectPattern": { "multiline": true, "consistent": true }
     }],
+    "import/extensions": 0,
     "import/prefer-default-export": 0
   }
 }
