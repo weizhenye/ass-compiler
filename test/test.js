@@ -10,6 +10,8 @@ import './parser/text.js';
 import './parser/time.js';
 import './compiler/dialogues.js';
 import './compiler/drawing.js';
+import './compiler/index.js';
 import './compiler/styles.js';
 import './compiler/tag.js';
 import './compiler/text.js';
+import './index.js';
