@@ -8,6 +8,7 @@ import './parser/tag.js';
 import './parser/tags.js';
 import './parser/text.js';
 import './parser/time.js';
+import './compiler/dialogues.js';
 import './compiler/drawing.js';
 import './compiler/styles.js';
 import './compiler/tag.js';
