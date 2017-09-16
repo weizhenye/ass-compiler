@@ -11,3 +11,4 @@ import './parser/time.js';
 import './compiler/drawing.js';
 import './compiler/styles.js';
 import './compiler/tag.js';
+import './compiler/text.js';
