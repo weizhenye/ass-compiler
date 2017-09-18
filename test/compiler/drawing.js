@@ -71,20 +71,11 @@ describe('drawing compiler', () => {
 
   it('should compile drawing commands', () => {
     const rawCommands = parseDrawing('m 0 0 s 150 60 150 150 60 150 120 120 90 90 b 60 90 90 120 60 120');
-    const { minX, minY, width, height, d, normalized } = compileDrawing(rawCommands);
+    const { minX, minY, width, height, d } = compileDrawing(rawCommands);
     expect(minX).to.equal(0);
     expect(minY).to.equal(0);
     expect(width).to.equal(150);
     expect(height).to.equal(150);
     expect(d).to.equal('M0,0M125,65C150,90,150,120,135,135C120,150,90,150,85,145C80,140,100,130,105,120L90,90C60,90,90,120,60,120');
-    expect(normalized.instructions).to.deep.equal([
-      { type: 'M', points: [{ x: 0, y: 0 }] },
-      { type: 'M', points: [{ x: 5 / 6, y: 13 / 30 }] },
-      { type: 'C', points: [{ x: 1, y: 0.6 }, { x: 1, y: 0.8 }, { x: 0.9, y: 0.9 }] },
-      { type: 'C', points: [{ x: 0.8, y: 1 }, { x: 0.6, y: 1 }, { x: 17 / 30, y: 29 / 30 }] },
-      { type: 'C', points: [{ x: 8 / 15, y: 14 / 15 }, { x: 2 / 3, y: 13 / 15 }, { x: 0.7, y: 0.8 }] },
-      { type: 'L', points: [{ x: 0.6, y: 0.6 }] },
-      { type: 'C', points: [{ x: 0.4, y: 0.6 }, { x: 0.6, y: 0.8 }, { x: 0.4, y: 0.8 }] },
-    ]);
   });
 });

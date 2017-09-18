@@ -28,13 +28,6 @@ describe('text compiler', () => {
           { type: 'L', points: [{ x: 1, y: 0 }, { x: 1, y: 1 }] },
         ],
         d: 'M0,0L1,0,1,1',
-        normalized: {
-          instructions: [
-            { type: 'M', points: [{ x: 0, y: 0 }] },
-            { type: 'L', points: [{ x: 1, y: 0 }, { x: 1, y: 1 }] },
-          ],
-          d: 'M0,0L1,0,1,1',
-        },
       },
     });
   });

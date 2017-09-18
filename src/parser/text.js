@@ -8,14 +8,13 @@ export function parseText(text) {
     parsed.push({ tags: [], text: pairs[0], drawing: [] });
   }
   for (let i = 1; i < pairs.length; i += 2) {
-    const fragment = { tags: parseTags(pairs[i]) };
-    const pTag = fragment.tags
-      .filter(tag => tag.p !== undefined)
-      .pop();
-    const isDrawing = pTag && pTag.p;
-    fragment.text = isDrawing ? '' : pairs[i + 1];
-    fragment.drawing = isDrawing ? parseDrawing(pairs[i + 1]) : [];
-    parsed.push(fragment);
+    const tags = parseTags(pairs[i]);
+    const isDrawing = tags.some(tag => tag.p);
+    parsed.push({
+      tags,
+      text: isDrawing ? '' : pairs[i + 1],
+      drawing: isDrawing ? parseDrawing(pairs[i + 1]) : [],
+    });
   }
   return {
     raw: text,

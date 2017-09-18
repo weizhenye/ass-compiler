@@ -1,3 +1,5 @@
+import { assign } from '../utils.js';
+
 function createCommand(arr) {
   const cmd = {
     type: null,
@@ -123,7 +125,6 @@ export function compileDrawing(rawCommands) {
       rawCommands.splice(i, 1);
     }
   }
-  const { minX, minY, width, height } = getViewBox(commands);
   const instructions = [].concat(
     ...commands.map(({ type, points, prev, next }) => (
       type === 'S'
@@ -131,21 +132,6 @@ export function compileDrawing(rawCommands) {
         : { type, points }
     ))
   );
-  const normalizedInstructions = instructions.map(({ type, points }) => ({
-    type,
-    points: points.map(({ x, y }) => ({ x: x / width, y: y / height })),
-  }));
 
-  return {
-    minX,
-    minY,
-    width,
-    height,
-    instructions,
-    d: toSVGPath(instructions),
-    normalized: {
-      instructions: normalizedInstructions,
-      d: toSVGPath(normalizedInstructions),
-    },
-  };
+  return assign({ instructions, d: toSVGPath(instructions) }, getViewBox(commands));
 }
