@@ -9,7 +9,7 @@ export function parseText(text) {
   }
   for (let i = 1; i < pairs.length; i += 2) {
     const tags = parseTags(pairs[i]);
-    const isDrawing = tags.some(tag => tag.p);
+    const isDrawing = tags.reduce((v, tag) => (tag.p === undefined ? v : !!tag.p), false);
     parsed.push({
       tags,
       text: isDrawing ? '' : pairs[i + 1],

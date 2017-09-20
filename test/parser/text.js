@@ -60,4 +60,8 @@ describe('text parser', () => {
       ],
     });
   });
+
+  it('should detect whether it is drawing', () => {
+    expect(parseText('{\\p1\\p0}m 0 0 l 1 0').parsed[0].drawing).to.deep.equal([]);
+  });
 });
