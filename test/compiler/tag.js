@@ -91,6 +91,11 @@ describe('tag compiler', () => {
     expect(compileTag({ xbord: -1 }, 'xbord')).to.deep.equal({ xbord: 0 });
   });
 
+  it('should compile c', () => {
+    expect(compileTag({ c1: '000000' }, 'c1', { c1: 'FFFFFF' })).to.deep.equal({ c1: '000000' });
+    expect(compileTag({ c1: '' }, 'c1', { c1: 'FFFFFF' })).to.deep.equal({ c1: 'FFFFFF' });
+  });
+
   it('should compile alpha', () => {
     expect(compileTag({ alpha: 'FF' }, 'alpha')).to.deep.equal({ a1: 'FF', a2: 'FF', a3: 'FF', a4: 'FF' });
   });

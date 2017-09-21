@@ -52,7 +52,8 @@ export function compileText({ styles, name, parsed }) {
       clip = compileTag(tag, 'clip') || clip;
       const key = Object.keys(tag)[0];
       if (key && !~globalTags.indexOf(key)) {
-        assign(fragment.tag, compileTag(tag, key, { fs: prevTag.fs || slice.tag.fs }));
+        const { c1, c2, c3, c4, fs } = slice.tag;
+        assign(fragment.tag, compileTag(tag, key, { c1, c2, c3, c4, fs: prevTag.fs || fs }));
       }
     }
     prevTag = fragment.tag;

@@ -102,6 +102,7 @@ describe('tag parser', () => {
     expect(parseTag('1c&FFFFFF')).to.deep.equal({ c1: 'FFFFFF' });
     expect(parseTag('1cFFFFFF')).to.deep.equal({ c1: 'FFFFFF' });
     expect(parseTag('1cHFFFFFF')).to.deep.equal({ c1: 'FFFFFF' });
+    expect(parseTag('1c')).to.deep.equal({ c1: '' });
   });
 
   it('should parse alpha', () => {

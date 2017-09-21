@@ -8,7 +8,7 @@ const tTags = [
   'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',
 ];
 
-export function compileTag(tag, key, { fs } = {}) {
+export function compileTag(tag, key, presets = {}) {
   let value = tag[key];
   if (value === undefined) {
     return null;
@@ -53,6 +53,9 @@ export function compileTag(tag, key, { fs } = {}) {
   if (key === 'shad') {
     return { xshad: value, yshad: value };
   }
+  if (/^c\d$/.test(key)) {
+    return { [key]: value || presets[key] };
+  }
   if (key === 'alpha') {
     return { a1: value, a2: value, a3: value, a4: value };
   }
@@ -62,7 +65,7 @@ export function compileTag(tag, key, { fs } = {}) {
   if (key === 'fs') {
     return {
       fs: /^\+|-/.test(value)
-        ? (value * 1 > -10 ? (1 + value / 10) : 1) * fs
+        ? (value * 1 > -10 ? (1 + value / 10) : 1) * presets.fs
         : value * 1,
     };
   }
@@ -72,7 +75,7 @@ export function compileTag(tag, key, { fs } = {}) {
     tags.forEach((t) => {
       const k = Object.keys(t)[0];
       if (~tTags.indexOf(k) && !(k === 'clip' && !t[k].dots)) {
-        assign(compiledTag, compileTag(t, k, { fs }));
+        assign(compiledTag, compileTag(t, k, presets));
       }
     });
     return { t: { t1, t2, accel, tag: compiledTag } };
