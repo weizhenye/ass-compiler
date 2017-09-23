@@ -20,7 +20,20 @@ function createSlice(name, styles) {
   };
 }
 
-export function compileText({ styles, name, parsed }) {
+function mergeT(ts, t) {
+  let merged = false;
+  ts.forEach(({ t1, t2, accel, tag }) => {
+    if (t1 === t.t1 && t2 === t.t2 && accel === t.accel) {
+      assign(tag, t.tag);
+      merged = true;
+    }
+  });
+  if (!merged) {
+    ts.push(t);
+  }
+}
+
+export function compileText({ styles, name, parsed, start, end }) {
   let alignment;
   let pos;
   let org;
@@ -38,7 +51,7 @@ export function compileText({ styles, name, parsed }) {
       reset = tag.r === undefined ? reset : tag.r;
     }
     const fragment = {
-      tag: reset === undefined ? assign({}, prevTag) : {},
+      tag: reset === undefined ? JSON.parse(JSON.stringify(prevTag)) : {},
       text,
       drawing: drawing.length ? compileDrawing(drawing) : null,
     };
@@ -52,8 +65,15 @@ export function compileText({ styles, name, parsed }) {
       clip = compileTag(tag, 'clip') || clip;
       const key = Object.keys(tag)[0];
       if (key && !~globalTags.indexOf(key)) {
-        const { c1, c2, c3, c4, fs } = slice.tag;
-        assign(fragment.tag, compileTag(tag, key, { c1, c2, c3, c4, fs: prevTag.fs || fs }));
+        const { c1, c2, c3, c4 } = slice.tag;
+        const fs = prevTag.fs || slice.tag.fs;
+        const compiledTag = compileTag(tag, key, { start, end, c1, c2, c3, c4, fs });
+        if (key === 't') {
+          fragment.tag.t = fragment.tag.t || [];
+          mergeT(fragment.tag.t, compiledTag.t);
+        } else {
+          assign(fragment.tag, compiledTag);
+        }
       }
     }
     prevTag = fragment.tag;

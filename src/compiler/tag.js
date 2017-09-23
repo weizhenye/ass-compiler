@@ -70,7 +70,8 @@ export function compileTag(tag, key, presets = {}) {
     };
   }
   if (key === 't') {
-    const { t1, t2, accel, tags } = value;
+    const { t1, accel, tags } = value;
+    const t2 = value.t2 || (presets.end - presets.start) * 1e3;
     const compiledTag = {};
     tags.forEach((t) => {
       const k = Object.keys(t)[0];

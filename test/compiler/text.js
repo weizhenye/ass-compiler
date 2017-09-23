@@ -76,13 +76,28 @@ describe('text compiler', () => {
     ]);
   });
 
+  it('should compile text with \\t', () => {
+    const { parsed } = parseText('{\\t(\\frx30)\\t(0,500,\\fry60)\\t(\\frz90)\\t(0,500,1,\\frz60)}foo');
+    const { slices } = compileText({ styles, name, parsed, start: 0, end: 1 });
+    expect(slices[0].fragments[0].tag).to.deep.equal({
+      t: [
+        { t1: 0, t2: 1000, accel: 1, tag: { frx: 30, frz: 90 } },
+        { t1: 0, t2: 500, accel: 1, tag: { fry: 60, frz: 60 } },
+      ],
+    });
+  });
+
   it('should inherit tag from previous fragment', () => {
-    const { parsed } = parseText('{\\frx30}a{\\fry60}b{\\frx150\\frz120}c');
-    const { slices } = compileText({ styles, name, parsed });
+    const { parsed } = parseText('{\\frx30}a{\\fry60}b{\\frx150\\frz120}c{\\r\\t(\\frx30)}d{\\t(\\fry60)}e');
+    const { slices } = compileText({ styles, name, parsed, start: 0, end: 1 });
     expect(slices[0].fragments).to.deep.equal([
       { tag: { frx: 30 }, text: 'a', drawing: null },
       { tag: { frx: 30, fry: 60 }, text: 'b', drawing: null },
       { tag: { frx: 150, fry: 60, frz: 120 }, text: 'c', drawing: null },
+    ]);
+    expect(slices[1].fragments).to.deep.equal([
+      { tag: { t: [{ t1: 0, t2: 1000, accel: 1, tag: { frx: 30 } }] }, text: 'd', drawing: null },
+      { tag: { t: [{ t1: 0, t2: 1000, accel: 1, tag: { frx: 30, fry: 60 } }] }, text: 'e', drawing: null },
     ]);
   });
 });

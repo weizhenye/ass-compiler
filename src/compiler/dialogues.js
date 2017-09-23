@@ -10,7 +10,13 @@ export function compileDialogues({ info, styles, dialogues }) {
     }
     const stl = styles[dia.Style].style;
     const timer = info.Timer / 100 || 1;
-    const compiledText = compileText({ styles, name: dia.Style, parsed: dia.Text.parsed });
+    const compiledText = compileText({
+      styles,
+      name: dia.Style,
+      parsed: dia.Text.parsed,
+      start: dia.Start,
+      end: dia.End,
+    });
     const alignment = compiledText.alignment || stl.Alignment;
     results.push(assign({
       layer: dia.Layer,
