@@ -20,19 +20,6 @@ function createSlice(name, styles) {
   };
 }
 
-function mergeT(ts, t) {
-  let merged = false;
-  ts.forEach(({ t1, t2, accel, tag }) => {
-    if (t1 === t.t1 && t2 === t.t2 && accel === t.accel) {
-      assign(tag, t.tag);
-      merged = true;
-    }
-  });
-  if (!merged) {
-    ts.push(t);
-  }
-}
-
 export function compileText({ styles, name, parsed, start, end }) {
   let alignment;
   let pos;
@@ -70,7 +57,7 @@ export function compileText({ styles, name, parsed, start, end }) {
         const compiledTag = compileTag(tag, key, { start, end, c1, c2, c3, c4, fs });
         if (key === 't') {
           fragment.tag.t = fragment.tag.t || [];
-          mergeT(fragment.tag.t, compiledTag.t);
+          fragment.tag.t.push(compiledTag.t);
         } else {
           assign(fragment.tag, compiledTag);
         }

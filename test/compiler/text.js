@@ -81,8 +81,10 @@ describe('text compiler', () => {
     const { slices } = compileText({ styles, name, parsed, start: 0, end: 1 });
     expect(slices[0].fragments[0].tag).to.deep.equal({
       t: [
-        { t1: 0, t2: 1000, accel: 1, tag: { frx: 30, frz: 90 } },
-        { t1: 0, t2: 500, accel: 1, tag: { fry: 60, frz: 60 } },
+        { t1: 0, t2: 1000, accel: 1, tag: { frx: 30 } },
+        { t1: 0, t2: 500, accel: 1, tag: { fry: 60 } },
+        { t1: 0, t2: 1000, accel: 1, tag: { frz: 90 } },
+        { t1: 0, t2: 500, accel: 1, tag: { frz: 60 } },
       ],
     });
   });
@@ -95,9 +97,12 @@ describe('text compiler', () => {
       { tag: { frx: 30, fry: 60 }, text: 'b', drawing: null },
       { tag: { frx: 150, fry: 60, frz: 120 }, text: 'c', drawing: null },
     ]);
-    expect(slices[1].fragments).to.deep.equal([
-      { tag: { t: [{ t1: 0, t2: 1000, accel: 1, tag: { frx: 30 } }] }, text: 'd', drawing: null },
-      { tag: { t: [{ t1: 0, t2: 1000, accel: 1, tag: { frx: 30, fry: 60 } }] }, text: 'e', drawing: null },
+    expect(slices[1].fragments[0].tag.t).to.deep.equal([
+      { t1: 0, t2: 1000, accel: 1, tag: { frx: 30 } },
+    ]);
+    expect(slices[1].fragments[1].tag.t).to.deep.equal([
+      { t1: 0, t2: 1000, accel: 1, tag: { frx: 30 } },
+      { t1: 0, t2: 1000, accel: 1, tag: { fry: 60 } },
     ]);
   });
 });
