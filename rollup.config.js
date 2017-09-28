@@ -5,7 +5,7 @@ export default {
   output: {
     file: 'dist/ass-compiler.js',
     format: 'umd',
-    moduleName: 'assCompiler',
+    name: 'assCompiler',
   },
   plugins: [
     buble(),

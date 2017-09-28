@@ -6,12 +6,22 @@
 [![NPM version](https://img.shields.io/npm/v/ass-compiler.svg)](https://www.npmjs.com/package/ass-compiler)
 [![License](https://img.shields.io/npm/l/ass-compiler.svg)](https://github.com/weizhenye/ass-compiler/blob/master/LICENSE)
 
-**WORK IN PROCESS**
+Parses and compiles ASS subtitle format to easy-to-use data structure.
 
-Parses and compiles ASS/SSA subtitle format to easy-to-use data structure.
+[Online Viewer](https://ass.js.org/ass-compiler/)
 
 ## Installation
 
 ```bash
 npm install ass-compiler
 ```
+
+## Usage
+
+```js
+import { parse, compile } from 'ass-compiler';
+parse(text);
+compile(text);
+```
+
+For details of data structure, please use the [online viewer](https://ass.js.org/ass-compiler/).
