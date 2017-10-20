@@ -641,7 +641,15 @@ function compileText(ref) {
       slices.push(slice);
       slice = createSlice(reset || name, styles);
     }
-    slice.fragments.push(fragment);
+    if (fragment.text || fragment.drawing) {
+      var prev = slice.fragments[slice.fragments.length - 1] || {};
+      if (prev.text && fragment.text && !Object.keys(fragment.tag).length) {
+        // merge fragment to previous if its tag is empty
+        prev.text += fragment.text;
+      } else {
+        slice.fragments.push(fragment);
+      }
+    }
   }
   slices.push(slice);
 
@@ -653,6 +661,7 @@ function compileDialogues(ref) {
   var styles = ref.styles;
   var dialogues = ref.dialogues;
 
+  var minLayer = Infinity;
   var results = [];
   for (var i = 0; i < dialogues.length; i++) {
     var dia = dialogues[i];
@@ -669,6 +678,7 @@ function compileDialogues(ref) {
       end: dia.End,
     });
     var alignment = compiledText.alignment || stl.Alignment;
+    minLayer = Math.min(minLayer, dia.Layer);
     results.push(assign({
       layer: dia.Layer,
       start: dia.Start / timer,
@@ -681,6 +691,9 @@ function compileDialogues(ref) {
       },
       effect: dia.Effect,
     }, compiledText, { alignment: alignment }));
+  }
+  for (var i$1 = 0; i$1 < results.length; i$1++) {
+    results[i$1].layer -= minLayer;
   }
   return results.sort(function (a, b) { return a.start - b.start || a.end - b.end; });
 }
