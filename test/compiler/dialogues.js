@@ -67,4 +67,14 @@ describe('dialogues compiler', () => {
     expect(start).to.equal(0);
     expect(end).to.equal(10);
   });
+
+  it('should make layer be a non-negative number', () => {
+    const dialogues = [
+      '-1,0:00:00.00,0:00:03.00,Default,,0,0,0,,text-1',
+      '1,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
+      '2,0:00:05.00,0:00:07.00,Default,,0,0,0,,text2',
+    ].map(dialogue => parseDialogue(dialogue, dialogueFormat));
+    const layers = compileDialogues({ info, styles, dialogues }).map(dia => dia.layer);
+    expect(layers).to.deep.equal([0, 2, 3]);
+  });
 });

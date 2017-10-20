@@ -2,6 +2,7 @@ import { compileText } from './text.js';
 import { assign } from '../utils.js';
 
 export function compileDialogues({ info, styles, dialogues }) {
+  let minLayer = Infinity;
   const results = [];
   for (let i = 0; i < dialogues.length; i++) {
     const dia = dialogues[i];
@@ -18,6 +19,7 @@ export function compileDialogues({ info, styles, dialogues }) {
       end: dia.End,
     });
     const alignment = compiledText.alignment || stl.Alignment;
+    minLayer = Math.min(minLayer, dia.Layer);
     results.push(assign({
       layer: dia.Layer,
       start: dia.Start / timer,
@@ -30,6 +32,9 @@ export function compileDialogues({ info, styles, dialogues }) {
       },
       effect: dia.Effect,
     }, compiledText, { alignment }));
+  }
+  for (let i = 0; i < results.length; i++) {
+    results[i].layer -= minLayer;
   }
   return results.sort((a, b) => a.start - b.start || a.end - b.end);
 }
