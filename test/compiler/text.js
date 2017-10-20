@@ -112,4 +112,12 @@ describe('text compiler', () => {
     expect(slices[0].fragments[0].tag).to.deep.equal({ p: 1, b: 1 });
     expect(slices[0].fragments.length).to.equal(1);
   });
+
+  it('should merge two fragments if the latter has no tag', () => {
+    const { parsed } = parseText('foo{\\a1}bar{\\an2}baz');
+    const { slices } = compileText({ styles, name, parsed });
+    expect(slices[0].fragments).to.deep.equal([
+      { tag: {}, text: 'foobarbaz', drawing: null },
+    ]);
+  });
 });

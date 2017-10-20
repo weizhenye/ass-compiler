@@ -69,7 +69,13 @@ export function compileText({ styles, name, parsed, start, end }) {
       slice = createSlice(reset || name, styles);
     }
     if (fragment.text || fragment.drawing) {
-      slice.fragments.push(fragment);
+      const prev = slice.fragments[slice.fragments.length - 1] || {};
+      if (prev.text && fragment.text && !Object.keys(fragment.tag).length) {
+        // merge fragment to previous if its tag is empty
+        prev.text += fragment.text;
+      } else {
+        slice.fragments.push(fragment);
+      }
     }
   }
   slices.push(slice);
