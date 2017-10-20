@@ -105,4 +105,11 @@ describe('text compiler', () => {
       { t1: 0, t2: 1000, accel: 1, tag: { fry: 60 } },
     ]);
   });
+
+  it('should not create fragment without text and drawing', () => {
+    const { parsed } = parseText('{\\b1}{\\p1}m 0 0 l 1 0 1 1{\\p0}');
+    const { slices } = compileText({ styles, name, parsed });
+    expect(slices[0].fragments[0].tag).to.deep.equal({ p: 1, b: 1 });
+    expect(slices[0].fragments.length).to.equal(1);
+  });
 });

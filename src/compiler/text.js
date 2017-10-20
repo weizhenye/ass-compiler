@@ -68,7 +68,9 @@ export function compileText({ styles, name, parsed, start, end }) {
       slices.push(slice);
       slice = createSlice(reset || name, styles);
     }
-    slice.fragments.push(fragment);
+    if (fragment.text || fragment.drawing) {
+      slice.fragments.push(fragment);
+    }
   }
   slices.push(slice);
 
