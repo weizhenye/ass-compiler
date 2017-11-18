@@ -140,8 +140,16 @@ function parseTag(text) {
 }
 
 function parseTags(text) {
+  var depth = 0;
   return text
-    .replace(/\((?:[^()]+|\([^()]*\))*\)/g, function (x) { return x.replace(/\\/g, '\n'); })
+    .split('')
+    .map(function (x) {
+      if (x === '(') { depth++; }
+      if (x === ')') { depth--; }
+      if (depth < 0) { depth = 0; }
+      return (depth && x === '\\') ? '\n' : x;
+    })
+    .join('')
     .split(/\\/)
     .slice(1)
     .map(function (x) { return x.replace(/\n/g, '\\'); })
@@ -463,15 +471,15 @@ var tTags = [
   'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad' ];
 
 function compileTag(tag, key, presets) {
-  if ( presets === void 0 ) presets = {};
+  var obj, obj$1, obj$2;
 
+  if ( presets === void 0 ) presets = {};
   var value = tag[key];
   if (value === undefined) {
     return null;
   }
   if (key === 'pos' || key === 'org') {
-    return value.length === 2 ? ( obj = {}, obj[key] = { x: value[0], y: value[1] }, obj ) : null;
-    var obj;
+    return value.length === 2 ? ( obj = {}, obj[key] = { x: value[0], y: value[1] }, obj) : null;
   }
   if (key === 'move') {
     var x1 = value[0];
@@ -529,8 +537,7 @@ function compileTag(tag, key, presets) {
     return { xshad: value, yshad: value };
   }
   if (/^c\d$/.test(key)) {
-    return ( obj$1 = {}, obj$1[key] = value || presets[key], obj$1 );
-    var obj$1;
+    return ( obj$1 = {}, obj$1[key] = value || presets[key], obj$1);
   }
   if (key === 'alpha') {
     return { a1: value, a2: value, a3: value, a4: value };
@@ -559,8 +566,7 @@ function compileTag(tag, key, presets) {
     });
     return { t: { t1: t1$3, t2: t2$3, accel: accel, tag: compiledTag } };
   }
-  return ( obj$2 = {}, obj$2[key] = value, obj$2 );
-  var obj$2;
+  return ( obj$2 = {}, obj$2[key] = value, obj$2);
 }
 
 var a2an = [
