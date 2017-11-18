@@ -32,4 +32,8 @@ describe('tags parser', () => {
       },
     ]);
   });
+
+  it('should avoid ReDoS', () => {
+    expect(parseTags('\\foo(11111111111111111111111111111(2(3)2)1)x)')).to.deep.equal([{}]);
+  });
 });
