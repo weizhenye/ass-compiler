@@ -8,37 +8,38 @@ const numTags = [
   'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',
 ];
 
+const numRegexs = numTags.map(nt => ({ name: nt, regex: new RegExp(`^${nt}-?\\d`) }));
+
 export function parseTag(text) {
   const tag = {};
-  for (let i = 0; i < numTags.length; i++) {
-    const nt = numTags[i];
-    const regex = new RegExp(`^${nt}-?\\d`);
+  for (let i = 0; i < numRegexs.length; i++) {
+    const { name, regex } = numRegexs[i];
     if (regex.test(text)) {
-      tag[nt] = text.slice(nt.length) * 1;
+      tag[name] = text.slice(name.length) * 1;
+      return tag;
     }
   }
-  if (/^fn/.test(text)) tag.fn = text.slice(2);
-  if (/^r/.test(text)) tag.r = text.slice(1);
-  if (/^fs[\d+-]/.test(text)) tag.fs = text.slice(2);
-  if (/^\d?c&?H?[0-9a-f]+|^\d?c$/i.test(text)) {
+  if (/^fn/.test(text)) {
+    tag.fn = text.slice(2);
+  } else if (/^r/.test(text)) {
+    tag.r = text.slice(1);
+  } else if (/^fs[\d+-]/.test(text)) {
+    tag.fs = text.slice(2);
+  } else if (/^\d?c&?H?[0-9a-f]+|^\d?c$/i.test(text)) {
     const [, num, color] = text.match(/^(\d?)c&?H?(\w*)/);
     tag[`c${num || 1}`] = color && `000000${color}`.slice(-6);
-  }
-  if (/^\da&?H?[0-9a-f]+/i.test(text)) {
+  } else if (/^\da&?H?[0-9a-f]+/i.test(text)) {
     const [, num, alpha] = text.match(/^(\d)a&?H?(\w\w)/);
     tag[`a${num}`] = alpha;
-  }
-  if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
+  } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
     [, tag.alpha] = text.match(/^alpha&?H?(\w\w)/);
-  }
-  if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
+  } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
     const [, key, value] = text.match(/^(\w+)\((.*?)\)/);
     tag[key] = value
       .trim()
       .split(/\s*,\s*/)
       .map(Number);
-  }
-  if (/^i?clip/.test(text)) {
+  } else if (/^i?clip/.test(text)) {
     const p = text
       .match(/^i?clip\((.*)\)/)[1]
       .trim()
@@ -59,8 +60,7 @@ export function parseTag(text) {
     if (p.length === 4) {
       tag.clip.dots = p.map(Number);
     }
-  }
-  if (/^t\(/.test(text)) {
+  } else if (/^t\(/.test(text)) {
     const p = text
       .match(/^t\((.*)\)/)[1]
       .trim()

@@ -1,18 +1,23 @@
 import { parseTag } from './tag.js';
 
 export function parseTags(text) {
+  const tags = [];
   let depth = 0;
-  return text
-    .split('')
-    .map((x) => {
-      if (x === '(') depth++;
-      if (x === ')') depth--;
-      if (depth < 0) depth = 0;
-      return (depth && x === '\\') ? '\n' : x;
-    })
-    .join('')
-    .split(/\\/)
-    .slice(1)
-    .map(x => x.replace(/\n/g, '\\'))
-    .map(parseTag);
+  let str = '';
+  for (let i = 0; i < text.length; i++) {
+    const x = text[i];
+    if (x === '(') depth++;
+    if (x === ')') depth--;
+    if (depth < 0) depth = 0;
+    if (!depth && x === '\\') {
+      if (str) {
+        tags.push(str);
+      }
+      str = '';
+    } else {
+      str += x;
+    }
+  }
+  tags.push(str);
+  return tags.map(parseTag);
 }
