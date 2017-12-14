@@ -79,7 +79,7 @@ function parseTag(text) {
     var assign;
     (assign = text.match(/^alpha&?H?(\w\w)/), tag.alpha = assign[1]);
   } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
-    var ref$3 = text.match(/^(\w+)\((.*?)\)/);
+    var ref$3 = text.match(/^(\w+)\((.*?)\)?$/);
     var key = ref$3[1];
     var value = ref$3[2];
     tag[key] = value
@@ -88,7 +88,7 @@ function parseTag(text) {
       .map(Number);
   } else if (/^i?clip/.test(text)) {
     var p = text
-      .match(/^i?clip\((.*)\)/)[1]
+      .match(/^i?clip\((.*?)\)?$/)[1]
       .trim()
       .split(/\s*,\s*/);
     tag.clip = {
@@ -109,7 +109,7 @@ function parseTag(text) {
     }
   } else if (/^t\(/.test(text)) {
     var p$1 = text
-      .match(/^t\((.*)\)/)[1]
+      .match(/^t\((.*?)\)?$/)[1]
       .trim()
       .replace(/\\.*/, function (x) { return x.replace(/,/g, '\n'); })
       .split(/\s*,\s*/);
