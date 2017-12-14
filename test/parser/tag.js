@@ -210,4 +210,41 @@ describe('tag parser', () => {
       },
     });
   });
+
+  it('should support ignoring closing parentheses', () => {
+    ['pos', 'org', 'move', 'fad', 'fade'].forEach((tag) => {
+      expect(parseTag(`${tag}(0,1,2,3`)).to.deep.equal({
+        [tag]: [0, 1, 2, 3],
+      });
+    });
+    const clip = {
+      inverse: false,
+      scale: 1,
+      drawing: null,
+      dots: [0, 1, 2, 3],
+    };
+    expect(parseTag('clip(0,1,2,3')).to.deep.equal({ clip });
+    expect(parseTag('clip(m 0 0 l 1 0 1 1 0 1')).to.deep.equal({
+      clip: {
+        inverse: false,
+        scale: 1,
+        drawing: [
+          ['m', '0', '0'],
+          ['l', '1', '0', '1', '1', '0', '1'],
+        ],
+        dots: null,
+      },
+    });
+    expect(parseTag('t(2,\\fs20')).to.deep.equal({
+      t: { t1: 0, t2: 0, accel: 2, tags: [{ fs: '20' }] },
+    });
+    expect(parseTag('t(\\clip(0,1,2,3\\fs20').t.tags).to.deep.equal([
+      { clip },
+      { fs: '20' },
+    ]);
+    expect(parseTag('t(\\fs20\\clip(0,1,2,3').t.tags).to.deep.equal([
+      { fs: '20' },
+      { clip },
+    ]);
+  });
 });

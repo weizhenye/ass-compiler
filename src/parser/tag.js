@@ -34,14 +34,14 @@ export function parseTag(text) {
   } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
     [, tag.alpha] = text.match(/^alpha&?H?(\w\w)/);
   } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
-    const [, key, value] = text.match(/^(\w+)\((.*?)\)/);
+    const [, key, value] = text.match(/^(\w+)\((.*?)\)?$/);
     tag[key] = value
       .trim()
       .split(/\s*,\s*/)
       .map(Number);
   } else if (/^i?clip/.test(text)) {
     const p = text
-      .match(/^i?clip\((.*)\)/)[1]
+      .match(/^i?clip\((.*?)\)?$/)[1]
       .trim()
       .split(/\s*,\s*/);
     tag.clip = {
@@ -62,7 +62,7 @@ export function parseTag(text) {
     }
   } else if (/^t\(/.test(text)) {
     const p = text
-      .match(/^t\((.*)\)/)[1]
+      .match(/^t\((.*?)\)?$/)[1]
       .trim()
       .replace(/\\.*/, x => x.replace(/,/g, '\n'))
       .split(/\s*,\s*/);
