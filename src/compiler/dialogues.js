@@ -4,10 +4,16 @@ import { assign } from '../utils.js';
 export function compileDialogues({ info, styles, dialogues }) {
   let minLayer = Infinity;
   const results = [];
+  // eslint-disable-next-line
+  const defaultStyleName = styles['*Default'] ? '*Default' : styles.Default ? 'Default' : Object.keys(styles)[0];
   for (let i = 0; i < dialogues.length; i++) {
     const dia = dialogues[i];
     if (dia.Start >= dia.End) {
       continue;
+    }
+    // fallback to default
+    if (!styles[dia.Style]) {
+      dia.Style = defaultStyleName;
     }
     const stl = styles[dia.Style].style;
     const timer = info.Timer / 100 || 1;

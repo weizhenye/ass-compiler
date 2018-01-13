@@ -76,8 +76,8 @@ function parseTag(text) {
     var alpha = ref$2[2];
     tag[("a" + num$1)] = alpha;
   } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
-    var assign;
-    (assign = text.match(/^alpha&?H?(\w\w)/), tag.alpha = assign[1]);
+    var assign = text.match(/^alpha&?H?(\w\w|\d)/);
+    tag.alpha = assign[1].length === 2 ? assign[1] : (("0" + (assign[1])));
   } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
     var ref$3 = text.match(/^(\w+)\((.*?)\)?$/);
     var key = ref$3[1];
@@ -676,10 +676,16 @@ function compileDialogues(ref) {
 
   var minLayer = Infinity;
   var results = [];
+  // eslint-disable-next-line
+  var defaultStyleName = styles['*Default'] ? '*Default' : styles.Default ? 'Default' : Object.keys(styles)[0];
   for (var i = 0; i < dialogues.length; i++) {
     var dia = dialogues[i];
     if (dia.Start >= dia.End) {
       continue;
+    }
+    // fallback to default
+    if (!styles[dia.Style]) {
+      dia.Style = defaultStyleName;
     }
     var stl = styles[dia.Style].style;
     var timer = info.Timer / 100 || 1;
