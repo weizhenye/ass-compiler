@@ -11,7 +11,6 @@ const a2an = [
 const globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
 function createSlice(name, styles) {
-  // TODO: if (styles[name] === undefined) {}
   return {
     name,
     borderStyle: styles[name].style.BorderStyle,

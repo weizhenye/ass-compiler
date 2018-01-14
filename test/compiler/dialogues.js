@@ -77,4 +77,14 @@ describe('dialogues compiler', () => {
     const layers = compileDialogues({ info, styles, dialogues }).map(dia => dia.layer);
     expect(layers).to.deep.equal([0, 2, 3]);
   });
+
+  it('should use Default Style when style name is not found', () => {
+    const dialogue = parseDialogue('0,0:00:00.00,0:00:05.00,Unknown,,0,0,0,,text', dialogueFormat);
+    const { margin } = compileDialogues({
+      info,
+      styles,
+      dialogues: [dialogue],
+    })[0];
+    expect(margin.left).to.equal(10);
+  });
 });

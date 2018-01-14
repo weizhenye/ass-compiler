@@ -9,6 +9,9 @@ export function compileDialogues({ info, styles, dialogues }) {
     if (dia.Start >= dia.End) {
       continue;
     }
+    if (!styles[dia.Style]) {
+      dia.Style = 'Default';
+    }
     const stl = styles[dia.Style].style;
     const timer = info.Timer / 100 || 1;
     const compiledText = compileText({
