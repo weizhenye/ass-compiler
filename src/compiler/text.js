@@ -65,7 +65,7 @@ export function compileText({ styles, name, parsed, start, end }) {
     prevTag = fragment.tag;
     if (reset !== undefined) {
       slices.push(slice);
-      slice = createSlice(reset || name, styles);
+      slice = createSlice(styles[reset] ? reset : name, styles);
     }
     if (fragment.text || fragment.drawing) {
       const prev = slice.fragments[slice.fragments.length - 1] || {};

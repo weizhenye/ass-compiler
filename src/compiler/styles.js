@@ -35,19 +35,27 @@ function parseStyleColor(color) {
 
 export function compileStyles({ info, style, format, defaultStyle }) {
   const result = {};
-  const ds = assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' });
-  const styles = [format.map(fmt => ds[fmt])].concat(style);
-  for (let i = 0; i < styles.length; i++) {
-    const stl = styles[i];
-    const s = {};
-    for (let j = 0; j < format.length; j++) {
-      const fmt = format[j];
-      s[fmt] = (fmt === 'Name' || fmt === 'Fontname' || /Colour/.test(fmt)) ? stl[j] : stl[j] * 1;
-      // this behavior is same as Aegisub by black-box testing
-      if (fmt === 'Name' && /^(\*+)Default$/.test(s[fmt])) {
-        s[fmt] = 'Default';
+  const styles = [
+    assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' }),
+    ...style.map((stl) => {
+      const s = {};
+      for (let i = 0; i < format.length; i++) {
+        s[format[i]] = stl[i];
       }
+      return s;
+    }),
+  ];
+  for (let i = 0; i < styles.length; i++) {
+    const s = styles[i];
+    // this behavior is same as Aegisub by black-box testing
+    if (/^(\*+)Default$/.test(s.Name)) {
+      s.Name = 'Default';
     }
+    Object.keys(s).forEach((key) => {
+      if (key !== 'Name' && key !== 'Fontname' && !/Colour/.test(key)) {
+        s[key] *= 1;
+      }
+    });
     const [a1, c1] = parseStyleColor(s.PrimaryColour);
     const [a2, c2] = parseStyleColor(s.SecondaryColour);
     const [a3, c3] = parseStyleColor(s.OutlineColour);
