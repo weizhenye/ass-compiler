@@ -120,6 +120,9 @@ describe('tag parser', () => {
     expect(parseTag('alpha&HFF')).to.deep.equal({ alpha: 'FF' });
     expect(parseTag('alpha&FF')).to.deep.equal({ alpha: 'FF' });
     expect(parseTag('alphaHFF')).to.deep.equal({ alpha: 'FF' });
+    expect(parseTag('alpha&HF')).to.deep.equal({ alpha: '0F' });
+    expect(parseTag('alpha&H1234')).to.deep.equal({ alpha: '34' });
+    expect(parseTag('alpha&H12X34')).to.deep.equal({ alpha: '12' });
   });
 
   it('should parse pos,org,move,fad,fade', () => {

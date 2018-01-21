@@ -32,8 +32,8 @@ export function parseTag(text) {
     const [, num, alpha] = text.match(/^(\d)a&?H?(\w\w)/);
     tag[`a${num}`] = alpha;
   } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
-    const assign = text.match(/^alpha&?H?(\w\w|\d)/);
-    tag.alpha = assign[1].length === 2 ? assign[1] : (`0${assign[1]}`);
+    [, tag.alpha] = text.match(/^alpha&?H?([0-9a-f]+)/i);
+    tag.alpha = `00${tag.alpha}`.slice(-2);
   } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
     const [, key, value] = text.match(/^(\w+)\((.*?)\)?$/);
     tag[key] = value
