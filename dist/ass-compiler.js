@@ -76,8 +76,9 @@ function parseTag(text) {
     var alpha = ref$2[2];
     tag[("a" + num$1)] = alpha;
   } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
-    var assign = text.match(/^alpha&?H?(\w\w|\d)/);
-    tag.alpha = assign[1].length === 2 ? assign[1] : (("0" + (assign[1])));
+    var assign;
+    (assign = text.match(/^alpha&?H?([0-9a-f]+)/i), tag.alpha = assign[1]);
+    tag.alpha = ("00" + (tag.alpha)).slice(-2);
   } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
     var ref$3 = text.match(/^(\w+)\((.*?)\)?$/);
     var key = ref$3[1];
@@ -584,7 +585,6 @@ var a2an = [
 var globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
 function createSlice(name, styles) {
-  // TODO: if (styles[name] === undefined) {}
   return {
     name: name,
     borderStyle: styles[name].style.BorderStyle,
@@ -676,16 +676,13 @@ function compileDialogues(ref) {
 
   var minLayer = Infinity;
   var results = [];
-  // eslint-disable-next-line
-  var defaultStyleName = styles['*Default'] ? '*Default' : styles.Default ? 'Default' : Object.keys(styles)[0];
   for (var i = 0; i < dialogues.length; i++) {
     var dia = dialogues[i];
     if (dia.Start >= dia.End) {
       continue;
     }
-    // fallback to default
     if (!styles[dia.Style]) {
-      dia.Style = defaultStyleName;
+      dia.Style = 'Default';
     }
     var stl = styles[dia.Style].style;
     var timer = info.Timer / 100 || 1;
@@ -717,6 +714,34 @@ function compileDialogues(ref) {
   return results.sort(function (a, b) { return a.start - b.start || a.end - b.end; });
 }
 
+// same as Aegisub
+// https://github.com/Aegisub/Aegisub/blob/master/src/ass_style.h
+var DEFAULT_STYLE = {
+  Name: 'Default',
+  Fontname: 'Arial',
+  Fontsize: '20',
+  PrimaryColour: '&H00FFFFFF&',
+  SecondaryColour: '&H000000FF&',
+  OutlineColour: '&H00000000&',
+  BackColour: '&H00000000&',
+  Bold: '0',
+  Italic: '0',
+  Underline: '0',
+  StrikeOut: '0',
+  ScaleX: '100',
+  ScaleY: '100',
+  Spacing: '0',
+  Angle: '0',
+  BorderStyle: '1',
+  Outline: '2',
+  Shadow: '2',
+  Alignment: '2',
+  MarginL: '10',
+  MarginR: '10',
+  MarginV: '10',
+  Encoding: '1',
+};
+
 function parseStyleColor(color) {
   var ref = color.match(/&H(\w\w)?(\w{6})&?/);
   var a = ref[1];
@@ -728,14 +753,21 @@ function compileStyles(ref) {
   var info = ref.info;
   var style = ref.style;
   var format = ref.format;
+  var defaultStyle = ref.defaultStyle;
 
   var result = {};
-  for (var i = 0; i < style.length; i++) {
-    var stl = style[i];
+  var ds = assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' });
+  var styles = [format.map(function (fmt) { return ds[fmt]; })].concat(style);
+  for (var i = 0; i < styles.length; i++) {
+    var stl = styles[i];
     var s = {};
     for (var j = 0; j < format.length; j++) {
       var fmt = format[j];
       s[fmt] = (fmt === 'Name' || fmt === 'Fontname' || /Colour/.test(fmt)) ? stl[j] : stl[j] * 1;
+      // this behavior is same as Aegisub by black-box testing
+      if (fmt === 'Name' && /^(\*+)Default$/.test(s[fmt])) {
+        s[fmt] = 'Default';
+      }
     }
     var ref$1 = parseStyleColor(s.PrimaryColour);
     var a1 = ref$1[0];
@@ -779,12 +811,15 @@ function compileStyles(ref) {
   return result;
 }
 
-function compile(text) {
+function compile(text, options) {
+  if ( options === void 0 ) options = {};
+
   var tree = parse(text);
   var styles = compileStyles({
     info: tree.info,
     style: tree.styles.style,
     format: tree.styles.format,
+    defaultStyle: options.defaultStyle || {},
   });
   return {
     info: tree.info,
