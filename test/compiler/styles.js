@@ -1,12 +1,17 @@
 import { expect } from 'chai';
+import { parseStyle } from '../../src/parser/style.js';
 import { compileStyles } from '../../src/compiler/styles.js';
 
 describe('styles compiler', () => {
-  const style = [['Default', 'Arial', '20', '&H00FFFFFF', '&H000000FF', '&H000000', '&H00000000', '-1', '0', '0', '0', '100', '100', '0', '0', '1', '2', '2', '2', '10', '10', '10', '0']];
+  const styleString = 'Style:Default,Arial,20,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0';
   const format = ['Name', 'Fontname', 'Fontsize', 'PrimaryColour', 'SecondaryColour', 'OutlineColour', 'BackColour', 'Bold', 'Italic', 'Underline', 'StrikeOut', 'ScaleX', 'ScaleY', 'Spacing', 'Angle', 'BorderStyle', 'Outline', 'Shadow', 'Alignment', 'MarginL', 'MarginR', 'MarginV', 'Encoding'];
 
   it('should compile styles', () => {
-    const result = compileStyles({ info: { WrapStyle: 0 }, style, format });
+    const result = compileStyles({
+      info: { WrapStyle: 0 },
+      style: [parseStyle(styleString)],
+      format,
+    });
     expect(result.Default.style).to.deep.equal({
       Name: 'Default',
       Fontname: 'Arial',
@@ -60,7 +65,25 @@ describe('styles compiler', () => {
   });
 
   it('should set WrapStyle default to 2', () => {
-    const result = compileStyles({ info: {}, style, format });
+    const result = compileStyles({
+      info: {},
+      style: [parseStyle(styleString)],
+      format,
+    });
     expect(result.Default.tag.q).to.equal(2);
+  });
+
+  it('should handle `*Default` as `Default`', () => {
+    const result = compileStyles({
+      info: { WrapStyle: 0 },
+      style: [
+        parseStyle('Style:*Default,Arial,21,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0'),
+        parseStyle('Style:**Default,Arial,22,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0'),
+      ],
+      format,
+    });
+    expect(result['*Default']).to.equal(undefined);
+    expect(result['**Default']).to.equal(undefined);
+    expect(result.Default.tag.fs).to.equal(22);
   });
 });
