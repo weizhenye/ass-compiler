@@ -652,7 +652,7 @@ function compileText(ref) {
     prevTag = fragment.tag;
     if (reset !== undefined) {
       slices.push(slice);
-      slice = createSlice(reset || name, styles);
+      slice = createSlice(styles[reset] ? reset : name, styles);
     }
     if (fragment.text || fragment.drawing) {
       var prev = slice.fragments[slice.fragments.length - 1] || {};
@@ -756,19 +756,25 @@ function compileStyles(ref) {
   var defaultStyle = ref.defaultStyle;
 
   var result = {};
-  var ds = assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' });
-  var styles = [format.map(function (fmt) { return ds[fmt]; })].concat(style);
-  for (var i = 0; i < styles.length; i++) {
-    var stl = styles[i];
-    var s = {};
-    for (var j = 0; j < format.length; j++) {
-      var fmt = format[j];
-      s[fmt] = (fmt === 'Name' || fmt === 'Fontname' || /Colour/.test(fmt)) ? stl[j] : stl[j] * 1;
-      // this behavior is same as Aegisub by black-box testing
-      if (fmt === 'Name' && /^(\*+)Default$/.test(s[fmt])) {
-        s[fmt] = 'Default';
+  var styles = [
+    assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' }) ].concat( style.map(function (stl) {
+      var s = {};
+      for (var i = 0; i < format.length; i++) {
+        s[format[i]] = stl[i];
       }
+      return s;
+    }) );
+  var loop = function ( i ) {
+    var s = styles[i];
+    // this behavior is same as Aegisub by black-box testing
+    if (/^(\*+)Default$/.test(s.Name)) {
+      s.Name = 'Default';
     }
+    Object.keys(s).forEach(function (key) {
+      if (key !== 'Name' && key !== 'Fontname' && !/Colour/.test(key)) {
+        s[key] *= 1;
+      }
+    });
     var ref$1 = parseStyleColor(s.PrimaryColour);
     var a1 = ref$1[0];
     var c1 = ref$1[1];
@@ -807,7 +813,9 @@ function compileStyles(ref) {
       q: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
     };
     result[s.Name] = { style: s, tag: tag };
-  }
+  };
+
+  for (var i = 0; i < styles.length; i++) loop( i );
   return result;
 }
 
