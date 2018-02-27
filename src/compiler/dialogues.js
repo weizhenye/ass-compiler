@@ -1,7 +1,7 @@
 import { compileText } from './text.js';
 import { assign } from '../utils.js';
 
-export function compileDialogues({ info, styles, dialogues }) {
+export function compileDialogues({ styles, dialogues }) {
   let minLayer = Infinity;
   const results = [];
   for (let i = 0; i < dialogues.length; i++) {
@@ -13,7 +13,6 @@ export function compileDialogues({ info, styles, dialogues }) {
       dia.Style = 'Default';
     }
     const stl = styles[dia.Style].style;
-    const timer = info.Timer / 100 || 1;
     const compiledText = compileText({
       styles,
       name: dia.Style,
@@ -25,8 +24,8 @@ export function compileDialogues({ info, styles, dialogues }) {
     minLayer = Math.min(minLayer, dia.Layer);
     results.push(assign({
       layer: dia.Layer,
-      start: dia.Start / timer,
-      end: dia.End / timer,
+      start: dia.Start,
+      end: dia.End,
       // reset style by `\r` will not effect margin and alignment
       margin: {
         left: dia.MarginL || stl.MarginL,

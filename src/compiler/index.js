@@ -17,7 +17,6 @@ export function compile(text, options = {}) {
     collisions: tree.info.Collisions || 'Normal',
     styles,
     dialogues: compileDialogues({
-      info: tree.info,
       styles,
       dialogues: tree.events.dialogue,
     }),
