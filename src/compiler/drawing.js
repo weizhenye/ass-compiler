@@ -99,21 +99,19 @@ export function compileDrawing(rawCommands) {
   while (i < rawCommands.length) {
     const arr = rawCommands[i];
     const cmd = createCommand(arr);
-    if (cmd.type) {
+    if (isValid(cmd)) {
       if (cmd.type === 'S') {
-        const { x, y } = commands[i - 1].points.slice(-1)[0];
+        const { x, y } = (commands[i - 1] || { points: [{ x: 0, y: 0 }] }).points.slice(-1)[0];
         cmd.points.unshift({ x, y });
       }
-      if (isValid(cmd)) {
-        if (i) {
-          cmd.prev = commands[i - 1].type;
-          commands[i - 1].next = cmd.type;
-        }
-        commands.push(cmd);
+      if (i) {
+        cmd.prev = commands[i - 1].type;
+        commands[i - 1].next = cmd.type;
       }
+      commands.push(cmd);
       i++;
     } else {
-      if (commands[i - 1].type === 'S') {
+      if (i && commands[i - 1].type === 'S') {
         const additionPoints = {
           p: cmd.points,
           c: commands[i - 1].points.slice(0, 3),

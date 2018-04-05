@@ -1,4 +1,5 @@
 import buble from 'rollup-plugin-buble';
+import replace from 'rollup-plugin-replace';
 
 export default {
   input: 'src/index.js',
@@ -9,5 +10,8 @@ export default {
   },
   plugins: [
     buble(),
+    replace({
+      'Number.isNaN': 'isNaN',
+    }),
   ],
 };

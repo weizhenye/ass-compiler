@@ -53,20 +53,18 @@ describe('drawing compiler', () => {
     let rawCommands = null;
     rawCommands = [['m', '0', '0'], ['l']];
     expect(compileDrawing(rawCommands).d).to.equal('M0,0');
+    rawCommands = [['l'], ['m', '0', '0']];
+    expect(compileDrawing(rawCommands).d).to.equal('M0,0');
     rawCommands = [['m', '0', '0'], ['l', '1', '1', '1']];
     expect(compileDrawing(rawCommands).d).to.equal('M0,0L1,1');
-    rawCommands = [['m', '0', '0'], ['u', '1', '1']];
-    expect(compileDrawing(rawCommands).d).to.equal('M0,0');
     rawCommands = [['m', '0', '0'], ['b', '1', '0', '1', '1']];
     expect(compileDrawing(rawCommands).d).to.equal('M0,0');
     rawCommands = [['m', '0', '0'], ['s', '1', '1']];
     expect(compileDrawing(rawCommands).d).to.equal('M0,0');
-    rawCommands = [
-      ['m', '0', '0'],
-      ['s', '150', '60', '150', '150', '60', '150'],
-      ['x', '120', '120'],
-    ];
-    expect(compileDrawing(rawCommands).d).to.equal('M0,0M125,65C150,90,150,120,135,135');
+    rawCommands = [['s', '1', '1']];
+    expect(compileDrawing(rawCommands).d).to.equal('');
+    rawCommands = [['s', '150', '60', '150', '150', '60', '150'], ['l', '120']];
+    expect(compileDrawing(rawCommands).d).to.equal('L125,65C150,90,150,120,135,135');
   });
 
   it('should compile drawing commands', () => {
