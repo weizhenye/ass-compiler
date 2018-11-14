@@ -494,7 +494,7 @@
       return null;
     }
     if (key === 'pos' || key === 'org') {
-      return value.length === 2 ? ( obj = {}, obj[key] = { x: value[0], y: value[1] }, obj) : null;
+      return value.length === 2 ? ( obj = {}, obj[key] = { x: value[0], y: value[1] }, obj ) : null;
     }
     if (key === 'move') {
       var x1 = value[0];
@@ -552,7 +552,7 @@
       return { xshad: value, yshad: value };
     }
     if (/^c\d$/.test(key)) {
-      return ( obj$1 = {}, obj$1[key] = value || presets[key], obj$1);
+      return ( obj$1 = {}, obj$1[key] = value || presets[key], obj$1 );
     }
     if (key === 'alpha') {
       return { a1: value, a2: value, a3: value, a4: value };
@@ -581,7 +581,7 @@
       });
       return { t: { t1: t1$3, t2: t2$3, accel: accel, tag: compiledTag } };
     }
-    return ( obj$2 = {}, obj$2[key] = value, obj$2);
+    return ( obj$2 = {}, obj$2[key] = value, obj$2 );
   }
 
   var a2an = [
@@ -747,11 +747,30 @@
     Encoding: '1',
   };
 
+  /**
+   * @param {String} color
+   * @returns {Array} [AA, BBGGRR]
+   */
   function parseStyleColor(color) {
-    var ref = color.match(/&H(\w\w)?(\w{6})&?/);
-    var a = ref[1];
-    var c = ref[2];
-    return [a || '00', c];
+    if (/^(&|H|&H)[0-9a-f]{6,}/i.test(color)) {
+      var ref = color.match(/&?H?([0-9a-f]{2})?([0-9a-f]{6})/i);
+      var a = ref[1];
+      var c = ref[2];
+      return [a || '00', c];
+    }
+    var num = parseInt(color, 10);
+    if (!isNaN(num)) {
+      var min = -2147483648;
+      var max = 2147483647;
+      if (num < min) {
+        return ['00', '000000'];
+      }
+      var aabbggrr = (min <= num && num <= max)
+        ? ("00000000" + ((num < 0 ? num + 4294967296 : num).toString(16))).slice(-8)
+        : String(num).slice(0, 8);
+      return [aabbggrr.slice(0, 2), aabbggrr.slice(2)];
+    }
+    return ['00', '000000'];
   }
 
   function compileStyles(ref) {
