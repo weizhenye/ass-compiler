@@ -28,9 +28,28 @@ const DEFAULT_STYLE = {
   Encoding: '1',
 };
 
-function parseStyleColor(color) {
-  const [, a, c] = color.match(/&H(\w\w)?(\w{6})&?/);
-  return [a || '00', c];
+/**
+ * @param {String} color
+ * @returns {Array} [AA, BBGGRR]
+ */
+export function parseStyleColor(color) {
+  if (/^(&|H|&H)[0-9a-f]{6,}/i.test(color)) {
+    const [, a, c] = color.match(/&?H?([0-9a-f]{2})?([0-9a-f]{6})/i);
+    return [a || '00', c];
+  }
+  const num = parseInt(color, 10);
+  if (!Number.isNaN(num)) {
+    const min = -2147483648;
+    const max = 2147483647;
+    if (num < min) {
+      return ['00', '000000'];
+    }
+    const aabbggrr = (min <= num && num <= max)
+      ? `00000000${(num < 0 ? num + 4294967296 : num).toString(16)}`.slice(-8)
+      : String(num).slice(0, 8);
+    return [aabbggrr.slice(0, 2), aabbggrr.slice(2)];
+  }
+  return ['00', '000000'];
 }
 
 export function compileStyles({ info, style, format, defaultStyle }) {

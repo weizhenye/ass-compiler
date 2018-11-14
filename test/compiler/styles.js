@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { parseStyle } from '../../src/parser/style.js';
-import { compileStyles } from '../../src/compiler/styles.js';
+import { parseStyleColor, compileStyles } from '../../src/compiler/styles.js';
 
 describe('styles compiler', () => {
   const styleString = 'Style:Default,Arial,20,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0';
@@ -85,5 +85,45 @@ describe('styles compiler', () => {
     expect(result['*Default']).to.equal(undefined);
     expect(result['**Default']).to.equal(undefined);
     expect(result.Default.tag.fs).to.equal(22);
+  });
+
+  it('should parse color in (AA)BBGGRR format', () => {
+    expect(parseStyleColor('&H12345678')).to.deep.equal(['12', '345678']);
+    expect(parseStyleColor('&12345678')).to.deep.equal(['12', '345678']);
+    expect(parseStyleColor('H12345678')).to.deep.equal(['12', '345678']);
+    expect(parseStyleColor('&H123456')).to.deep.equal(['00', '123456']);
+    expect(parseStyleColor('&H12345678xx')).to.deep.equal(['12', '345678']);
+    expect(parseStyleColor('&H123456xx')).to.deep.equal(['00', '123456']);
+  });
+
+  it('should support color present in long integer', () => {
+    expect(parseStyleColor('65535')).to.deep.equal(['00', '00ffff']);
+    expect(parseStyleColor('-2147483640')).to.deep.equal(['80', '000008']);
+    expect(parseStyleColor('15724527')).to.deep.equal(['00', 'efefef']);
+    expect(parseStyleColor('986895')).to.deep.equal(['00', '0f0f0f']);
+    expect(parseStyleColor('2147483646')).to.deep.equal(['7f', 'fffffe']);
+    expect(parseStyleColor('2147483647')).to.deep.equal(['7f', 'ffffff']);
+    expect(parseStyleColor('2147483648')).to.deep.equal(['21', '474836']);
+    expect(parseStyleColor('2147483649')).to.deep.equal(['21', '474836']);
+    expect(parseStyleColor('-2147483647')).to.deep.equal(['80', '000001']);
+    expect(parseStyleColor('-2147483648')).to.deep.equal(['80', '000000']);
+    expect(parseStyleColor('-2147483649')).to.deep.equal(['00', '000000']);
+    expect(parseStyleColor('-2147483650')).to.deep.equal(['00', '000000']);
+    expect(parseStyleColor('999999999')).to.deep.equal(['3b', '9ac9ff']);
+    expect(parseStyleColor('9999999999')).to.deep.equal(['99', '999999']);
+    expect(parseStyleColor('255xx')).to.deep.equal(['00', '0000ff']);
+    expect(parseStyleColor('2147483648xx')).to.deep.equal(['21', '474836']);
+    expect(parseStyleColor('-2147483649xx')).to.deep.equal(['00', '000000']);
+    expect(parseStyleColor('999999999xx')).to.deep.equal(['3b', '9ac9ff']);
+    expect(parseStyleColor('999999999xx9')).to.deep.equal(['3b', '9ac9ff']);
+  });
+
+  it('should ignore invalid color format', () => {
+    const defaultVal = ['00', '000000'];
+    expect(parseStyleColor('&Hxx12345678')).to.deep.equal(defaultVal);
+    expect(parseStyleColor('&H12xx345678')).to.deep.equal(defaultVal);
+    expect(parseStyleColor('&H12345')).to.deep.equal(defaultVal);
+    expect(parseStyleColor('xx255')).to.deep.equal(defaultVal);
+    expect(parseStyleColor('xx-255')).to.deep.equal(defaultVal);
   });
 });
