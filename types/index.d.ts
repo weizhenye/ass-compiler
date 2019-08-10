@@ -1,7 +1,7 @@
 import { Tags } from "./tags";
 
 // Script Info
-interface ParsedAssInfo {
+interface ScriptInfo {
     Title: '<untitled>' | string;
     ScriptType: 'V4.00' | 'V4.00+' | string;
     WrapStyle: '0' | '1' | '2' | '3';
@@ -10,19 +10,20 @@ interface ParsedAssInfo {
     ScaledBorderAndShadow: 'yes' | 'no';
 
     Collisions: 'Normal' | 'Reverse';
-    'Last Style Storage'?: string;
-    'Video File'?: string;
-    'Video Aspect Ratio'?: string;
-    'Video Zoom'?: string;
-    'Video Position'?: string;
+    [name: string]: string;
+    // 'Last Style Storage'?: string;
+    // 'Video File'?: string;
+    // 'Video Aspect Ratio'?: string;
+    // 'Video Zoom'?: string;
+    // 'Video Position'?: string;
 
-    'Original Script'?: '<unknown>' | string;
-    'Original Translation'?: string;
-    'Original Editing'?: string;
-    'Original Timing'?: string;
-    'Synch Point'?: string;
-    'Script Updated By'?: string;
-    'Update Details'?: string;
+    // 'Original Script'?: '<unknown>' | string;
+    // 'Original Translation'?: string;
+    // 'Original Editing'?: string;
+    // 'Original Timing'?: string;
+    // 'Synch Point'?: string;
+    // 'Script Updated By'?: string;
+    // 'Update Details'?: string;
 }
 
 // v4 Styles
@@ -68,7 +69,7 @@ interface ParsedASSEvents {
 }
 
 export interface ParsedASS {
-    info: ParsedAssInfo;
+    info: ScriptInfo;
     styles: ParsedASSStyles;
     events: ParsedASSEvents;
 }
@@ -82,28 +83,29 @@ export function parse(text: string): ParsedASS;
 
 
 // Compiled Script Info
-interface CompiledAssInfo {
-    Title: '<untitled>' | string;
-    ScriptType: 'V4.00' | 'V4.00+' | string;
-    WrapStyle: '0' | '1' | '2' | '3';
-    PlayResX: string;
-    PlayResY: string
-    ScaledBorderAndShadow: 'yes' | 'no';
 
-    'Last Style Storage'?: string;
-    'Video File'?: string;
-    'Video Aspect Ratio'?: string;
-    'Video Zoom'?: string;
-    'Video Position'?: string;
+// interface CompiledAssInfo {
+//     Title: '<untitled>' | string;
+//     ScriptType: 'V4.00' | 'V4.00+' | string;
+//     WrapStyle: '0' | '1' | '2' | '3';
+//     PlayResX: string;
+//     PlayResY: string
+//     ScaledBorderAndShadow: 'yes' | 'no';
 
-    'Original Script'?: '<unknown>' | string;
-    'Original Translation'?: string;
-    'Original Editing'?: string;
-    'Original Timing'?: string;
-    'Synch Point'?: string;
-    'Script Updated By'?: string;
-    'Update Details'?: string;
-}
+//     'Last Style Storage'?: string;
+//     'Video File'?: string;
+//     'Video Aspect Ratio'?: string;
+//     'Video Zoom'?: string;
+//     'Video Position'?: string;
+
+//     'Original Script'?: '<unknown>' | string;
+//     'Original Translation'?: string;
+//     'Original Editing'?: string;
+//     'Original Timing'?: string;
+//     'Synch Point'?: string;
+//     'Script Updated By'?: string;
+//     'Update Details'?: string;
+// }
 
 export interface CompiledASSStyleTag {
     fn: string;
@@ -219,7 +221,7 @@ export interface Dialogue {
 }
 
 export interface CompiledASS {
-    info: CompiledAssInfo;
+    info: ScriptInfo;
     width: number;
     height: number;
     collisions: 'Normal' | 'Reverse';
