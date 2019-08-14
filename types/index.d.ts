@@ -153,7 +153,7 @@ export interface CompiledASSStyle {
         BorderStyle: 1 | 3;
         Outline: 0 | 1 | 2 | 3 | 4;
         Shadow: 0 | 1 | 2 | 3 | 4;
-        Alignment: 1 | 2 | 3 | 5 | 6 | 7 | 9 | 10 | 11;
+        Alignment: number;
         MarginL: number;
         MarginR: number;
         MarginV: number;

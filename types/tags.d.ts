@@ -2,7 +2,7 @@ export interface Tags {
     a: 0 | 1 | 2 | 3 | 5 | 6 | 7 | 9 | 10 | 11;
     a1: string;
     alpha: string;
-    an: 0 | 1 | 2 | 3 | 5 | 6 | 7 | 9 | 10 | 11;
+    an: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
     b: 0 | 1;
     be: number;
     blur: number;
