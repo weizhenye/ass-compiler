@@ -8,7 +8,7 @@ export function parseDrawing(text) {
     .trim()
     .replace(/\s+/g, ' ')
     .split(/\s(?=[mnlbspc])/)
-    .map(cmd => (
+    .map((cmd) => (
       cmd.split(' ')
         .filter((x, i) => !(i && Number.isNaN(x * 1)))
     ));

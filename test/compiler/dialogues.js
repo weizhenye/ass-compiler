@@ -43,8 +43,8 @@ describe('dialogues compiler', () => {
       '2,0:00:05.00,0:00:07.00,Default,,0,0,0,,text2',
       '1,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
       '0,0:00:00.00,0:00:03.00,Default,,0,0,0,,text0',
-    ].map(dialogue => parseDialogue(dialogue, dialogueFormat));
-    const layers = compileDialogues({ styles, dialogues }).map(dia => dia.layer);
+    ].map((dialogue) => parseDialogue(dialogue, dialogueFormat));
+    const layers = compileDialogues({ styles, dialogues }).map((dia) => dia.layer);
     expect(layers).to.deep.equal([0, 1, 2]);
   });
 
@@ -52,7 +52,7 @@ describe('dialogues compiler', () => {
     const dialogues = [
       '0,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
       '0,0:07:00.00,0:00:05.00,Default,,0,0,0,,text2',
-    ].map(dialogue => parseDialogue(dialogue, dialogueFormat));
+    ].map((dialogue) => parseDialogue(dialogue, dialogueFormat));
     expect(compileDialogues({ styles, dialogues })).to.have.lengthOf(1);
   });
 
@@ -61,8 +61,8 @@ describe('dialogues compiler', () => {
       '-1,0:00:00.00,0:00:03.00,Default,,0,0,0,,text-1',
       '1,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
       '2,0:00:05.00,0:00:07.00,Default,,0,0,0,,text2',
-    ].map(dialogue => parseDialogue(dialogue, dialogueFormat));
-    const layers = compileDialogues({ styles, dialogues }).map(dia => dia.layer);
+    ].map((dialogue) => parseDialogue(dialogue, dialogueFormat));
+    const layers = compileDialogues({ styles, dialogues }).map((dia) => dia.layer);
     expect(layers).to.deep.equal([0, 2, 3]);
   });
 

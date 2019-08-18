@@ -8,7 +8,7 @@ const numTags = [
   'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',
 ];
 
-const numRegexs = numTags.map(nt => ({ name: nt, regex: new RegExp(`^${nt}-?\\d`) }));
+const numRegexs = numTags.map((nt) => ({ name: nt, regex: new RegExp(`^${nt}-?\\d`) }));
 
 export function parseTag(text) {
   const tag = {};
@@ -65,7 +65,7 @@ export function parseTag(text) {
     const p = text
       .match(/^t\((.*?)\)?$/)[1]
       .trim()
-      .replace(/\\.*/, x => x.replace(/,/g, '\n'))
+      .replace(/\\.*/, (x) => x.replace(/,/g, '\n'))
       .split(/\s*,\s*/);
     if (!p[0]) return tag;
     tag.t = {

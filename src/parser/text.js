@@ -18,7 +18,7 @@ export function parseText(text) {
   }
   return {
     raw: text,
-    combined: parsed.map(frag => frag.text).join(''),
+    combined: parsed.map((frag) => frag.text).join(''),
     parsed,
   };
 }

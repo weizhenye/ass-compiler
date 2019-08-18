@@ -44,17 +44,17 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.0",
     "mocha-istanbul": "^0.3.0",
-    "rollup": "^0.67.1",
-    "rollup-plugin-buble": "^0.19.4",
+    "rollup": "^1.19.4",
+    "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-istanbul": "^2.0.1",
-    "rollup-plugin-multi-entry": "^2.0.2",
-    "rollup-plugin-replace": "^2.1.0",
-    "uglify-js": "^3.4.9"
+    "rollup-plugin-multi-entry": "^2.1.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "uglify-js": "^3.6.0"
   }
 }
