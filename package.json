@@ -6,8 +6,10 @@
   "module": "src/index.js",
   "files": [
     "dist",
-    "src"
+    "src",
+    "types"
   ],
+  "types": "types/index.d.ts",
   "scripts": {
     "lint": "eslint src test",
     "preunit": "rollup -c rollup.config.test.js",
