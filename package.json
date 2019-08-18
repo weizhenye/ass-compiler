@@ -1,6 +1,6 @@
 {
   "name": "ass-compiler",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Parses and compiles ASS subtitle format to easy-to-use data structure.",
   "main": "dist/ass-compiler.js",
   "module": "src/index.js",
