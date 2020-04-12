@@ -52,18 +52,9 @@ export function parseStyleColor(color) {
   return ['00', '000000'];
 }
 
-export function compileStyles({ info, style, format, defaultStyle }) {
+export function compileStyles({ info, style, defaultStyle }) {
   const result = {};
-  const styles = [
-    assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' }),
-    ...style.map((stl) => {
-      const s = {};
-      for (let i = 0; i < format.length; i++) {
-        s[format[i]] = stl[i];
-      }
-      return s;
-    }),
-  ];
+  const styles = [assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' })].concat(style);
   for (let i = 0; i < styles.length; i++) {
     const s = styles[i];
     // this behavior is same as Aegisub by black-box testing

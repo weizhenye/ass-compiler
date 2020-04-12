@@ -7,7 +7,6 @@ export function compile(text, options = {}) {
   const styles = compileStyles({
     info: tree.info,
     style: tree.styles.style,
-    format: tree.styles.format,
     defaultStyle: options.defaultStyle || {},
   });
   return {

@@ -9,8 +9,7 @@ describe('styles compiler', () => {
   it('should compile styles', () => {
     const result = compileStyles({
       info: { WrapStyle: 0 },
-      style: [parseStyle(styleString)],
-      format,
+      style: [parseStyle(styleString, format)],
     });
     expect(result.Default.style).to.deep.equal({
       Name: 'Default',
@@ -67,8 +66,7 @@ describe('styles compiler', () => {
   it('should set WrapStyle default to 2', () => {
     const result = compileStyles({
       info: {},
-      style: [parseStyle(styleString)],
-      format,
+      style: [parseStyle(styleString, format)],
     });
     expect(result.Default.tag.q).to.equal(2);
   });
@@ -77,10 +75,9 @@ describe('styles compiler', () => {
     const result = compileStyles({
       info: { WrapStyle: 0 },
       style: [
-        parseStyle('Style:*Default,Arial,21,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0'),
-        parseStyle('Style:**Default,Arial,22,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0'),
+        parseStyle('Style:*Default,Arial,21,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0', format),
+        parseStyle('Style:**Default,Arial,22,&H00FFFFFF,&H000000FF,&H000000,&H00000000,-1,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0', format),
       ],
-      format,
     });
     expect(result['*Default']).to.equal(undefined);
     expect(result['**Default']).to.equal(undefined);

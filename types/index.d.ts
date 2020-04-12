@@ -11,25 +11,38 @@ interface ScriptInfo {
 
     Collisions: 'Normal' | 'Reverse';
     [name: string]: string;
-    // 'Last Style Storage'?: string;
-    // 'Video File'?: string;
-    // 'Video Aspect Ratio'?: string;
-    // 'Video Zoom'?: string;
-    // 'Video Position'?: string;
-
-    // 'Original Script'?: '<unknown>' | string;
-    // 'Original Translation'?: string;
-    // 'Original Editing'?: string;
-    // 'Original Timing'?: string;
-    // 'Synch Point'?: string;
-    // 'Script Updated By'?: string;
-    // 'Update Details'?: string;
 }
 
 // v4 Styles
+interface ParsedASSStyleObject {
+    Name: string,
+    Fontname: string,
+    Fontsize: string,
+    PrimaryColour: string,
+    SecondaryColour: string,
+    OutlineColour: string,
+    BackColour: string,
+    Bold: string,
+    Italic: string,
+    Underline: string,
+    StrikeOut: string,
+    ScaleX: string,
+    ScaleY: string,
+    Spacing: string,
+    Angle: string,
+    BorderStyle: string,
+    Outline: string,
+    Shadow: string,
+    Alignment: string,
+    MarginL: string,
+    MarginR: string,
+    MarginV: string,
+    Encoding: string,
+}
+
 interface ParsedASSStyles {
     format: string[];
-    style: string[];
+    style: ParsedASSStyleObject[];
 }
 
 type ParsedASSEventTextParsedTag = {
@@ -83,29 +96,6 @@ export function parse(text: string): ParsedASS;
 
 
 // Compiled Script Info
-
-// interface CompiledAssInfo {
-//     Title: '<untitled>' | string;
-//     ScriptType: 'V4.00' | 'V4.00+' | string;
-//     WrapStyle: '0' | '1' | '2' | '3';
-//     PlayResX: string;
-//     PlayResY: string
-//     ScaledBorderAndShadow: 'yes' | 'no';
-
-//     'Last Style Storage'?: string;
-//     'Video File'?: string;
-//     'Video Aspect Ratio'?: string;
-//     'Video Zoom'?: string;
-//     'Video Position'?: string;
-
-//     'Original Script'?: '<unknown>' | string;
-//     'Original Translation'?: string;
-//     'Original Editing'?: string;
-//     'Original Timing'?: string;
-//     'Synch Point'?: string;
-//     'Script Updated By'?: string;
-//     'Update Details'?: string;
-// }
 
 export interface CompiledASSStyleTag {
     fn: string;

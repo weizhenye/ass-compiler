@@ -5,11 +5,58 @@ import { compileText } from '../../src/compiler/text.js';
 
 describe('text compiler', () => {
   const style = [
-    ['Default', 'Arial', '20', '&H00FFFFFF', '&H000000FF', '&H000000', '&H00000000', '-1', '0', '0', '0', '100', '100', '0', '0', '1', '2', '2', '2', '10', '10', '10', '0'],
-    ['alt', 'Arial', '24', '&H00FFFFFF', '&H000000FF', '&H000000', '&H00000000', '-1', '0', '0', '0', '100', '100', '0', '0', '3', '2', '2', '2', '10', '10', '10', '0'],
+    {
+      Name: 'Default',
+      Fontname: 'Arial',
+      Fontsize: '20',
+      PrimaryColour: '&H00FFFFFF',
+      SecondaryColour: '&H000000FF',
+      OutlineColour: '&H000000',
+      BackColour: '&H00000000',
+      Bold: '-1',
+      Italic: '0',
+      Underline: '0',
+      StrikeOut: '0',
+      ScaleX: '100',
+      ScaleY: '100',
+      Spacing: '0',
+      Angle: '0',
+      BorderStyle: '1',
+      Outline: '2',
+      Shadow: '2',
+      Alignment: '2',
+      MarginL: '10',
+      MarginR: '10',
+      MarginV: '10',
+      Encoding: '0',
+    },
+    {
+      Name: 'alt',
+      Fontname: 'Arial',
+      Fontsize: '24',
+      PrimaryColour: '&H00FFFFFF',
+      SecondaryColour: '&H000000FF',
+      OutlineColour: '&H000000',
+      BackColour: '&H00000000',
+      Bold: '-1',
+      Italic: '0',
+      Underline: '0',
+      StrikeOut: '0',
+      ScaleX: '100',
+      ScaleY: '100',
+      Spacing: '0',
+      Angle: '0',
+      BorderStyle: '3',
+      Outline: '2',
+      Shadow: '2',
+      Alignment: '2',
+      MarginL: '10',
+      MarginR: '10',
+      MarginV: '10',
+      Encoding: '0',
+    },
   ];
-  const format = ['Name', 'Fontname', 'Fontsize', 'PrimaryColour', 'SecondaryColour', 'OutlineColour', 'BackColour', 'Bold', 'Italic', 'Underline', 'StrikeOut', 'ScaleX', 'ScaleY', 'Spacing', 'Angle', 'BorderStyle', 'Outline', 'Shadow', 'Alignment', 'MarginL', 'MarginR', 'MarginV', 'Encoding'];
-  const styles = compileStyles({ info: { WrapStyle: 0 }, style, format });
+  const styles = compileStyles({ info: { WrapStyle: 0 }, style });
   const name = 'Default';
 
   it('should compile text with drawing', () => {

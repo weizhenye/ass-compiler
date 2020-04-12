@@ -31,7 +31,7 @@ export function parse(text) {
         tree.styles.format = parseFormat(line);
       }
       if (/^Style\s*:/i.test(line)) {
-        tree.styles.style.push(parseStyle(line));
+        tree.styles.style.push(parseStyle(line, tree.styles.format));
       }
     }
     if (state === 3) {
