@@ -1,6 +1,6 @@
 # ass-compiler
 
-[![Build status](https://badgen.net/travis/weizhenye/ass-compiler?icon=travis&label=build)](https://travis-ci.org/weizhenye/ass-compiler)
+[![GitHub Action](https://github.com/weizhenye/ass-compiler/workflows/CI/badge.svg)](https://github.com/weizhenye/ass-compiler/actions)
 [![Coverage](https://badgen.net/codecov/c/github/weizhenye/ass-compiler?icon=codecov)](https://codecov.io/gh/weizhenye/ass-compiler)
 [![Dependencies](https://badgen.net/david/dep/weizhenye/ass-compiler?icon=https://api.iconify.design/si-glyph:connect-2.svg?color=white)](https://david-dm.org/weizhenye/ass-compiler)
 [![NPM version](https://badgen.net/npm/v/ass-compiler?icon=npm)](https://www.npmjs.com/package/ass-compiler)

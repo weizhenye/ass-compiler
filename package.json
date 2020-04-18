@@ -4,6 +4,7 @@
   "description": "Parses and compiles ASS subtitle format to easy-to-use data structure.",
   "main": "dist/ass-compiler.js",
   "module": "src/index.js",
+  "sideEffects": false,
   "files": [
     "dist",
     "src",
@@ -50,11 +51,11 @@
     "istanbul": "^0.4.5",
     "mocha": "^6.2.3",
     "mocha-istanbul": "^0.3.0",
-    "rollup": "^1.32.1",
+    "rollup": "^2.6.1",
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-istanbul": "^2.0.1",
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-replace": "^2.2.0",
-    "uglify-js": "^3.8.1"
+    "uglify-js": "^3.9.1"
   }
 }

@@ -117,7 +117,7 @@ export function compileDrawing(rawCommands) {
           c: commands[i - 1].points.slice(0, 3),
         };
         commands[i - 1].points = commands[i - 1].points.concat(
-          (additionPoints[arr[0]] || []).map(({ x, y }) => ({ x, y }))
+          (additionPoints[arr[0]] || []).map(({ x, y }) => ({ x, y })),
         );
       }
       rawCommands.splice(i, 1);
@@ -128,7 +128,7 @@ export function compileDrawing(rawCommands) {
       type === 'S'
         ? s2b(points, prev, next)
         : { type, points }
-    ))
+    )),
   );
 
   return assign({ instructions, d: toSVGPath(instructions) }, getViewBox(commands));
