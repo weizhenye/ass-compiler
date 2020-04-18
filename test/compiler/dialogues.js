@@ -65,6 +65,8 @@ describe('dialogues compiler', () => {
       layer: 0,
       start: 0,
       end: 5,
+      style: 'Default',
+      name: '',
       margin: {
         left: 10,
         right: 10,

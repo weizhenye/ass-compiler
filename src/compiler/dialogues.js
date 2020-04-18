@@ -26,6 +26,8 @@ export function compileDialogues({ styles, dialogues }) {
       layer: dia.Layer,
       start: dia.Start,
       end: dia.End,
+      style: dia.Style,
+      name: dia.Name,
       // reset style by `\r` will not effect margin and alignment
       margin: {
         left: dia.MarginL || stl.MarginL,
