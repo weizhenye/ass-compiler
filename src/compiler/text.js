@@ -10,16 +10,7 @@ const a2an = [
 
 const globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
-function createSlice(name, styles) {
-  return {
-    name,
-    borderStyle: styles[name].style.BorderStyle,
-    tag: styles[name].tag,
-    fragments: [],
-  };
-}
-
-export function compileText({ styles, name, parsed, start, end }) {
+export function compileText({ styles, style, parsed, start, end }) {
   let alignment;
   let pos;
   let org;
@@ -27,7 +18,7 @@ export function compileText({ styles, name, parsed, start, end }) {
   let fade;
   let clip;
   const slices = [];
-  let slice = createSlice(name, styles);
+  let slice = { style, fragments: [] };
   let prevTag = {};
   for (let i = 0; i < parsed.length; i++) {
     const { tags, text, drawing } = parsed[i];
@@ -51,8 +42,9 @@ export function compileText({ styles, name, parsed, start, end }) {
       clip = compileTag(tag, 'clip') || clip;
       const key = Object.keys(tag)[0];
       if (key && !~globalTags.indexOf(key)) {
-        const { c1, c2, c3, c4 } = slice.tag;
-        const fs = prevTag.fs || slice.tag.fs;
+        const sliceTag = styles[style].tag;
+        const { c1, c2, c3, c4 } = sliceTag;
+        const fs = prevTag.fs || sliceTag.fs;
         const compiledTag = compileTag(tag, key, { start, end, c1, c2, c3, c4, fs });
         if (key === 't') {
           fragment.tag.t = fragment.tag.t || [];
@@ -65,7 +57,7 @@ export function compileText({ styles, name, parsed, start, end }) {
     prevTag = fragment.tag;
     if (reset !== undefined) {
       slices.push(slice);
-      slice = createSlice(styles[reset] ? reset : name, styles);
+      slice = { style: styles[reset] ? reset : style, fragments: [] };
     }
     if (fragment.text || fragment.drawing) {
       const prev = slice.fragments[slice.fragments.length - 1] || {};

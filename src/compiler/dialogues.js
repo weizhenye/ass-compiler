@@ -15,7 +15,7 @@ export function compileDialogues({ styles, dialogues }) {
     const stl = styles[dia.Style].style;
     const compiledText = compileText({
       styles,
-      name: dia.Style,
+      style: dia.Style,
       parsed: dia.Text.parsed,
       start: dia.Start,
       end: dia.End,

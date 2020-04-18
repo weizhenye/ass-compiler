@@ -159,8 +159,7 @@ export interface DialogueFragment {
 }
 
 export interface DialogueSlice {
-    name: string;
-    borderStyle: 1 | 3;
+    style: string;
     fragments: DialogueFragment[];
 }
 
@@ -199,6 +198,8 @@ export interface Dialogue {
     layer: number;
     start: number;
     end: number;
+    style: string;
+    name: string;
     margin: {
         left: number;
         right: number;
