@@ -24,6 +24,42 @@ export function stringifyEffect(eff) {
   return `${eff.name.replace(/^\w/, (x) => x.toUpperCase())};${eff.y1};${eff.y2};${eff.delay};${eff.fadeAwayHeight}`;
 }
 
+export function stringifyDrawing(drawing) {
+  return drawing.map((cmds) => cmds.join(' ')).join(' ');
+}
+
+export function stringifyTag(tag) {
+  const [key] = Object.keys(tag);
+  if (!key) return '';
+  const _ = tag[key];
+  if (['pos', 'org', 'move', 'fad', 'fade'].some((ft) => ft === key)) {
+    return `\\${key}(${_})`;
+  }
+  if (/^[ac]\d$/.test(key)) {
+    return `\\${key[1]}${key[0]}&H${_}&`;
+  }
+  if (key === 'alpha') {
+    return `\\alpha&H${_}&`;
+  }
+  if (key === 'clip') {
+    return `\\${_.inverse ? 'i' : ''}clip(${
+      _.dots || `${_.scale === 1 ? '' : `${_.scale},`}${stringifyDrawing(_.drawing)}`
+    })`;
+  }
+  if (key === 't') {
+    return `\\t(${[_.t1, _.t2, _.accel, _.tags.map(stringifyTag).join('')]})`;
+  }
+  return `\\${key}${_}`;
+}
+
+export function stringifyText(Text) {
+  return Text.parsed.map(({ tags, text, drawing }) => {
+    const tagText = tags.map(stringifyTag).join('');
+    const content = drawing.length ? stringifyDrawing(drawing) : text;
+    return `${tagText ? `{${tagText}}` : ''}${content}`;
+  }).join('');
+}
+
 export function stringifyEvent(event) {
   const m0 = '0000';
   return [
@@ -36,7 +72,7 @@ export function stringifyEvent(event) {
     event.MarginR || m0,
     event.MarginV || m0,
     stringifyEffect(event.Effect),
-    event.Text.raw,
+    stringifyText(event.Text),
   ].join();
 }
 
