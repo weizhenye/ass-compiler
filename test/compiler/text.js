@@ -149,6 +149,21 @@ describe('text compiler', () => {
     ]);
   });
 
+  it('should not inherit karaoke tags from previous fragment', () => {
+    const { parsed } = parseText('{\\k10}And {\\k5}now {\\k20}for {\\kf50}ka{\\kf20}ra{\\K70}o{\\K10}ke{\\k0}!');
+    const { slices } = compileText({ styles, style, parsed, start: 0, end: 1 });
+    expect(slices[0].fragments).to.deep.equal([
+      { drawing: null, text: 'And ', tag: { k: 10 } },
+      { drawing: null, text: 'now ', tag: { k: 5 } },
+      { drawing: null, text: 'for ', tag: { k: 20 } },
+      { drawing: null, text: 'ka', tag: { kf: 50 } },
+      { drawing: null, text: 'ra', tag: { kf: 20 } },
+      { drawing: null, text: 'o', tag: { K: 70 } },
+      { drawing: null, text: 'ke', tag: { K: 10 } },
+      { drawing: null, text: '!', tag: { k: 0 } },
+    ]);
+  });
+
   it('should not create fragment without text and drawing', () => {
     const { parsed } = parseText('{\\b1}{\\p1}m 0 0 l 1 0 1 1{\\p0}');
     const { slices } = compileText({ styles, style, parsed });

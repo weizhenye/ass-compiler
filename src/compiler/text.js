@@ -10,6 +10,14 @@ const a2an = [
 
 const globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
+function inheritTag(pTag) {
+  return JSON.parse(JSON.stringify(assign({}, pTag, {
+    k: undefined,
+    kf: undefined,
+    K: undefined,
+  })));
+}
+
 export function compileText({ styles, style, parsed, start, end }) {
   let alignment;
   let pos;
@@ -28,7 +36,7 @@ export function compileText({ styles, style, parsed, start, end }) {
       reset = tag.r === undefined ? reset : tag.r;
     }
     const fragment = {
-      tag: reset === undefined ? JSON.parse(JSON.stringify(prevTag)) : {},
+      tag: reset === undefined ? inheritTag(prevTag) : {},
       text,
       drawing: drawing.length ? compileDrawing(drawing) : null,
     };
