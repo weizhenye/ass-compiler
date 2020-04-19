@@ -21,9 +21,13 @@ npm install ass-compiler
 ## Usage
 
 ```js
-import { parse, compile } from 'ass-compiler';
-parse(text);
-compile(text, options);
+import { parse, stringify, compile, decompile } from 'ass-compiler';
+
+const parsedASS = parse(text);
+const stringifiedText = stringify(parsedASS);
+
+const compiledASS = compile(text, options);
+const decompiledText = decompile(compiledASS);
 ```
 
 ### options

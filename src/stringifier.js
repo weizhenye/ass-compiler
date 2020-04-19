@@ -1,3 +1,9 @@
+import { stylesFormat, eventsFormat } from './utils.js';
+
+export function stringifyInfo(info) {
+  return Object.keys(info).map((key) => `${key}: ${info[key]}`).join('\n');
+}
+
 function pad00(n) {
   return `00${n}`.slice(-2);
 }
@@ -11,48 +17,46 @@ export function stringifyTime(t) {
 }
 
 export function stringifyEffect(eff) {
+  if (!eff) return '';
   if (eff.name === 'banner') {
     return `Banner;${eff.delay};${eff.leftToRight};${eff.fadeAwayWidth}`;
   }
   return `${eff.name.replace(/^\w/, (x) => x.toUpperCase())};${eff.y1};${eff.y2};${eff.delay};${eff.fadeAwayHeight}`;
 }
 
-export function stringifyEvent(event, format) {
-  return format.map((fmt) => {
-    const value = event[fmt];
-    if (fmt === 'Start' || fmt === 'End') {
-      return stringifyTime(value);
-    }
-    if (/^Margin/.test(fmt)) {
-      return value || '0000';
-    }
-    if (fmt === 'Effect') {
-      return value ? stringifyEffect(value) : '';
-    }
-    if (fmt === 'Text') {
-      return value.raw;
-    }
-    return value;
-  }).join();
+export function stringifyEvent(event) {
+  const m0 = '0000';
+  return [
+    event.Layer,
+    stringifyTime(event.Start),
+    stringifyTime(event.End),
+    event.Style,
+    event.Name,
+    event.MarginL || m0,
+    event.MarginR || m0,
+    event.MarginV || m0,
+    stringifyEffect(event.Effect),
+    event.Text.raw,
+  ].join();
 }
 
 export function stringify({ info, styles, events }) {
   return [
     '[Script Info]',
-    ...Object.keys(info).map((key) => `${key}: ${info[key]}`),
+    stringifyInfo(info),
     '',
     '[V4+ Styles]',
-    `Format: ${styles.format.join(', ')}`,
-    ...styles.style.map((style) => `Style: ${styles.format.map((fmt) => style[fmt]).join()}`),
+    `Format: ${stylesFormat.join(', ')}`,
+    ...styles.style.map((style) => `Style: ${stylesFormat.map((fmt) => style[fmt]).join()}`),
     '',
     '[Events]',
-    `Format: ${events.format.join(', ')}`,
+    `Format: ${eventsFormat.join(', ')}`,
     ...[]
       .concat(...['Comment', 'Dialogue'].map((type) => (
         events[type.toLowerCase()].map((dia) => ({
           start: dia.Start,
           end: dia.End,
-          string: `${type}: ${stringifyEvent(dia, events.format)}`,
+          string: `${type}: ${stringifyEvent(dia)}`,
         }))
       )))
       .sort((a, b) => (a.start - b.start) || (a.end - b.end))

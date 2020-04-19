@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import { parseDialogue } from '../../src/parser/dialogue.js';
 import { compileDialogues } from '../../src/compiler/dialogues.js';
 import { compileStyles } from '../../src/compiler/styles.js';
+import { eventsFormat } from '../../src/utils.js';
 
 describe('dialogues compiler', () => {
-  const dialogueFormat = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];
   const style = [
     {
       Name: 'Default',
@@ -60,7 +60,7 @@ describe('dialogues compiler', () => {
   const styles = compileStyles({ info: { WrapStyle: 0 }, style });
 
   it('should compile dialogue', () => {
-    const dialogue = parseDialogue('0,0:00:00.00,0:00:05.00,Default,,0,0,0,,text', dialogueFormat);
+    const dialogue = parseDialogue('0,0:00:00.00,0:00:05.00,Default,,0,0,0,,text', eventsFormat);
     expect(compileDialogues({ styles, dialogues: [dialogue] })[0]).to.deep.equal({
       layer: 0,
       start: 0,
@@ -90,7 +90,7 @@ describe('dialogues compiler', () => {
       '2,0:00:05.00,0:00:07.00,Default,,0,0,0,,text2',
       '1,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
       '0,0:00:00.00,0:00:03.00,Default,,0,0,0,,text0',
-    ].map((dialogue) => parseDialogue(dialogue, dialogueFormat));
+    ].map((dialogue) => parseDialogue(dialogue, eventsFormat));
     const layers = compileDialogues({ styles, dialogues }).map((dia) => dia.layer);
     expect(layers).to.deep.equal([0, 1, 2]);
   });
@@ -99,7 +99,7 @@ describe('dialogues compiler', () => {
     const dialogues = [
       '0,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
       '0,0:07:00.00,0:00:05.00,Default,,0,0,0,,text2',
-    ].map((dialogue) => parseDialogue(dialogue, dialogueFormat));
+    ].map((dialogue) => parseDialogue(dialogue, eventsFormat));
     expect(compileDialogues({ styles, dialogues })).to.have.lengthOf(1);
   });
 
@@ -108,13 +108,13 @@ describe('dialogues compiler', () => {
       '-1,0:00:00.00,0:00:03.00,Default,,0,0,0,,text-1',
       '1,0:00:00.00,0:00:05.00,Default,,0,0,0,,text1',
       '2,0:00:05.00,0:00:07.00,Default,,0,0,0,,text2',
-    ].map((dialogue) => parseDialogue(dialogue, dialogueFormat));
+    ].map((dialogue) => parseDialogue(dialogue, eventsFormat));
     const layers = compileDialogues({ styles, dialogues }).map((dia) => dia.layer);
     expect(layers).to.deep.equal([0, 2, 3]);
   });
 
   it('should use Default Style when style name is not found', () => {
-    const dialogue = parseDialogue('0,0:00:00.00,0:00:05.00,Unknown,,0,0,0,,text', dialogueFormat);
+    const dialogue = parseDialogue('0,0:00:00.00,0:00:05.00,Unknown,,0,0,0,,text', eventsFormat);
     const { margin } = compileDialogues({ styles, dialogues: [dialogue] })[0];
     expect(margin.left).to.equal(10);
   });

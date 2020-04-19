@@ -93,7 +93,7 @@ export interface ParsedASS {
  */
 export function parse(text: string): ParsedASS;
 
-
+export function stringify(obj: ParsedASS): string;
 
 // Compiled Script Info
 
@@ -169,7 +169,7 @@ export interface DialogueDrawingInstructionPoint {
 }
 
 export interface DialogueDrawingInstruction {
-    type: 'M' | 'N' | 'L' | 'B' | 'C' | 'S';
+    type: 'M' | 'L' | 'C';
     points: DialogueDrawingInstructionPoint[];
 }
 
@@ -208,6 +208,36 @@ export interface Dialogue {
     effect: any;
     alignment: number;
     slices: DialogueSlice[];
+    pos?: {
+        x: number;
+        y: number;
+    };
+    org?: {
+        x: number;
+        y: number;
+    };
+    move?: {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        t1: number;
+        t2: number;
+    };
+    fade?: {
+        type: 'fad';
+        t1: number;
+        t2: number;
+    } | {
+        type: 'fade';
+        a1: number;
+        a2: number;
+        a3: number;
+        t1: number;
+        t2: number;
+        t3: number;
+        t4: number;
+    };
     clip?: DialogueClip;
 }
 
@@ -220,4 +250,6 @@ export interface CompiledASS {
     dialogues: Dialogue[];
 }
 
-export function compile(text: string): CompiledASS;
+export function compile(text: string, options: object): CompiledASS;
+
+export function decompile(obj: CompiledASS): string;
