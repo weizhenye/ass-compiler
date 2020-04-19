@@ -59,6 +59,7 @@ describe('styles compiler', () => {
       ybord: 2,
       xshad: 2,
       yshad: 2,
+      fe: 0,
       q: 0,
     });
   });

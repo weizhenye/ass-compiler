@@ -93,6 +93,7 @@ export function compileStyles({ info, style, defaultStyle }) {
       ybord: s.Outline,
       xshad: s.Shadow,
       yshad: s.Shadow,
+      fe: s.Encoding,
       q: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
     };
     result[s.Name] = { style: s, tag };
