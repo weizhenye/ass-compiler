@@ -69,6 +69,9 @@ export function compileTag(tag, key, presets = {}) {
         : value * 1,
     };
   }
+  if (key === 'K') {
+    return { kf: value };
+  }
   if (key === 't') {
     const { t1, accel, tags } = value;
     const t2 = value.t2 || (presets.end - presets.start) * 1e3;

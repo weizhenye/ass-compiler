@@ -14,7 +14,8 @@ function inheritTag(pTag) {
   return JSON.parse(JSON.stringify(assign({}, pTag, {
     k: undefined,
     kf: undefined,
-    K: undefined,
+    ko: undefined,
+    kt: undefined,
   })));
 }
 
