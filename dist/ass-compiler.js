@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = global || self, factory(global.assCompiler = {}));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
   function parseEffect(text) {
     var param = text
@@ -239,8 +239,34 @@
     return text.match(/Format\s*:\s*(.*)/i)[1].split(/\s*,\s*/);
   }
 
-  function parseStyle(text) {
-    return text.match(/Style\s*:\s*(.*)/i)[1].split(/\s*,\s*/);
+  var assign = Object.assign || (
+    /* istanbul ignore next */
+    function assign(target) {
+      var sources = [], len = arguments.length - 1;
+      while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
+
+      for (var i = 0; i < sources.length; i++) {
+        if (!sources[i]) { continue; }
+        var keys = Object.keys(sources[i]);
+        for (var j = 0; j < keys.length; j++) {
+          // eslint-disable-next-line no-param-reassign
+          target[keys[j]] = sources[i][keys[j]];
+        }
+      }
+      return target;
+    }
+  );
+
+  var stylesFormat = ['Name', 'Fontname', 'Fontsize', 'PrimaryColour', 'SecondaryColour', 'OutlineColour', 'BackColour', 'Bold', 'Italic', 'Underline', 'StrikeOut', 'ScaleX', 'ScaleY', 'Spacing', 'Angle', 'BorderStyle', 'Outline', 'Shadow', 'Alignment', 'MarginL', 'MarginR', 'MarginV', 'Encoding'];
+  var eventsFormat = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];
+
+  function parseStyle(text, format) {
+    var values = text.match(/Style\s*:\s*(.*)/i)[1].split(/\s*,\s*/);
+    return assign.apply(void 0, [ {} ].concat( format.map(function (fmt, idx) {
+      var obj;
+
+      return (( obj = {}, obj[fmt] = values[idx], obj ));
+    }) ));
   }
 
   function parse(text) {
@@ -274,7 +300,7 @@
           tree.styles.format = parseFormat(line);
         }
         if (/^Style\s*:/i.test(line)) {
-          tree.styles.style.push(parseStyle(line));
+          tree.styles.style.push(parseStyle(line, tree.styles.format));
         }
       }
       if (state === 3) {
@@ -293,23 +319,111 @@
     return tree;
   }
 
-  var assign = Object.assign || (
-    /* istanbul ignore next */
-    function assign(target) {
-      var sources = [], len = arguments.length - 1;
-      while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
+  function stringifyInfo(info) {
+    return Object.keys(info).map(function (key) { return (key + ": " + (info[key])); }).join('\n');
+  }
 
-      for (var i = 0; i < sources.length; i++) {
-        if (!sources[i]) { continue; }
-        var keys = Object.keys(sources[i]);
-        for (var j = 0; j < keys.length; j++) {
-          // eslint-disable-next-line no-param-reassign
-          target[keys[j]] = sources[i][keys[j]];
-        }
-      }
-      return target;
+  function pad00(n) {
+    return ("00" + n).slice(-2);
+  }
+
+  function stringifyTime(t) {
+    var ms = t.toFixed(2).slice(-2);
+    var s = (t | 0) % 60;
+    var m = (t / 60 | 0) % 60;
+    var h = t / 3600 | 0;
+    return (h + ":" + (pad00(m)) + ":" + (pad00(s)) + "." + ms);
+  }
+
+  function stringifyEffect(eff) {
+    if (!eff) { return ''; }
+    if (eff.name === 'banner') {
+      return ("Banner;" + (eff.delay) + ";" + (eff.leftToRight) + ";" + (eff.fadeAwayWidth));
     }
-  );
+    return ((eff.name.replace(/^\w/, function (x) { return x.toUpperCase(); })) + ";" + (eff.y1) + ";" + (eff.y2) + ";" + (eff.delay) + ";" + (eff.fadeAwayHeight));
+  }
+
+  function stringifyDrawing(drawing) {
+    return drawing.map(function (cmds) { return cmds.join(' '); }).join(' ');
+  }
+
+  function stringifyTag(tag) {
+    var ref = Object.keys(tag);
+    var key = ref[0];
+    if (!key) { return ''; }
+    var _ = tag[key];
+    if (['pos', 'org', 'move', 'fad', 'fade'].some(function (ft) { return ft === key; })) {
+      return ("\\" + key + "(" + _ + ")");
+    }
+    if (/^[ac]\d$/.test(key)) {
+      return ("\\" + (key[1]) + (key[0]) + "&H" + _ + "&");
+    }
+    if (key === 'alpha') {
+      return ("\\alpha&H" + _ + "&");
+    }
+    if (key === 'clip') {
+      return ("\\" + (_.inverse ? 'i' : '') + "clip(" + (_.dots || ("" + (_.scale === 1 ? '' : ((_.scale) + ",")) + (stringifyDrawing(_.drawing)))) + ")");
+    }
+    if (key === 't') {
+      return ("\\t(" + ([_.t1, _.t2, _.accel, _.tags.map(stringifyTag).join('')]) + ")");
+    }
+    return ("\\" + key + _);
+  }
+
+  function stringifyText(Text) {
+    return Text.parsed.map(function (ref) {
+      var tags = ref.tags;
+      var text = ref.text;
+      var drawing = ref.drawing;
+
+      var tagText = tags.map(stringifyTag).join('');
+      var content = drawing.length ? stringifyDrawing(drawing) : text;
+      return ("" + (tagText ? ("{" + tagText + "}") : '') + content);
+    }).join('');
+  }
+
+  function stringifyEvent(event) {
+    var m0 = '0000';
+    return [
+      event.Layer,
+      stringifyTime(event.Start),
+      stringifyTime(event.End),
+      event.Style,
+      event.Name,
+      event.MarginL || m0,
+      event.MarginR || m0,
+      event.MarginV || m0,
+      stringifyEffect(event.Effect),
+      stringifyText(event.Text) ].join();
+  }
+
+  function stringify(ref) {
+    var ref$1;
+
+    var info = ref.info;
+    var styles = ref.styles;
+    var events = ref.events;
+    return [
+      '[Script Info]',
+      stringifyInfo(info),
+      '',
+      '[V4+ Styles]',
+      ("Format: " + (stylesFormat.join(', '))) ].concat( styles.style.map(function (style) { return ("Style: " + (stylesFormat.map(function (fmt) { return style[fmt]; }).join())); }),
+      [''],
+      ['[Events]'],
+      [("Format: " + (eventsFormat.join(', ')))],
+      (ref$1 = [])
+        .concat.apply(ref$1, ['Comment', 'Dialogue'].map(function (type) { return (
+          events[type.toLowerCase()].map(function (dia) { return ({
+            start: dia.Start,
+            end: dia.End,
+            string: (type + ": " + (stringifyEvent(dia))),
+          }); })
+        ); }))
+        .sort(function (a, b) { return (a.start - b.start) || (a.end - b.end); })
+        .map(function (x) { return x.string; }),
+      [''] ).join('\n');
+  }
 
   function createCommand(arr) {
     var cmd = {
@@ -567,6 +681,9 @@
           : value * 1,
       };
     }
+    if (key === 'K') {
+      return { kf: value };
+    }
     if (key === 't') {
       var t1$3 = value.t1;
       var accel = value.accel;
@@ -591,18 +708,18 @@
 
   var globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
-  function createSlice(name, styles) {
-    return {
-      name: name,
-      borderStyle: styles[name].style.BorderStyle,
-      tag: styles[name].tag,
-      fragments: [],
-    };
+  function inheritTag(pTag) {
+    return JSON.parse(JSON.stringify(assign({}, pTag, {
+      k: undefined,
+      kf: undefined,
+      ko: undefined,
+      kt: undefined,
+    })));
   }
 
   function compileText(ref) {
     var styles = ref.styles;
-    var name = ref.name;
+    var style = ref.style;
     var parsed = ref.parsed;
     var start = ref.start;
     var end = ref.end;
@@ -614,7 +731,7 @@
     var fade;
     var clip;
     var slices = [];
-    var slice = createSlice(name, styles);
+    var slice = { style: style, fragments: [] };
     var prevTag = {};
     for (var i = 0; i < parsed.length; i++) {
       var ref$1 = parsed[i];
@@ -627,7 +744,7 @@
         reset = tag.r === undefined ? reset : tag.r;
       }
       var fragment = {
-        tag: reset === undefined ? JSON.parse(JSON.stringify(prevTag)) : {},
+        tag: reset === undefined ? inheritTag(prevTag) : {},
         text: text,
         drawing: drawing.length ? compileDrawing(drawing) : null,
       };
@@ -641,12 +758,12 @@
         clip = compileTag(tag$1, 'clip') || clip;
         var key = Object.keys(tag$1)[0];
         if (key && !~globalTags.indexOf(key)) {
-          var ref$2 = slice.tag;
-          var c1 = ref$2.c1;
-          var c2 = ref$2.c2;
-          var c3 = ref$2.c3;
-          var c4 = ref$2.c4;
-          var fs = prevTag.fs || slice.tag.fs;
+          var sliceTag = styles[style].tag;
+          var c1 = sliceTag.c1;
+          var c2 = sliceTag.c2;
+          var c3 = sliceTag.c3;
+          var c4 = sliceTag.c4;
+          var fs = prevTag.fs || sliceTag.fs;
           var compiledTag = compileTag(tag$1, key, { start: start, end: end, c1: c1, c2: c2, c3: c3, c4: c4, fs: fs });
           if (key === 't') {
             fragment.tag.t = fragment.tag.t || [];
@@ -659,7 +776,7 @@
       prevTag = fragment.tag;
       if (reset !== undefined) {
         slices.push(slice);
-        slice = createSlice(styles[reset] ? reset : name, styles);
+        slice = { style: styles[reset] ? reset : style, fragments: [] };
       }
       if (fragment.text || fragment.drawing) {
         var prev = slice.fragments[slice.fragments.length - 1] || {};
@@ -693,7 +810,7 @@
       var stl = styles[dia.Style].style;
       var compiledText = compileText({
         styles: styles,
-        name: dia.Style,
+        style: dia.Style,
         parsed: dia.Text.parsed,
         start: dia.Start,
         end: dia.End,
@@ -704,6 +821,8 @@
         layer: dia.Layer,
         start: dia.Start,
         end: dia.End,
+        style: dia.Style,
+        name: dia.Name,
         // reset style by `\r` will not effect margin and alignment
         margin: {
           left: dia.MarginL || stl.MarginL,
@@ -776,18 +895,10 @@
   function compileStyles(ref) {
     var info = ref.info;
     var style = ref.style;
-    var format = ref.format;
     var defaultStyle = ref.defaultStyle;
 
     var result = {};
-    var styles = [
-      assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' }) ].concat( style.map(function (stl) {
-        var s = {};
-        for (var i = 0; i < format.length; i++) {
-          s[format[i]] = stl[i];
-        }
-        return s;
-      }) );
+    var styles = [assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' })].concat(style);
     var loop = function ( i ) {
       var s = styles[i];
       // this behavior is same as Aegisub by black-box testing
@@ -834,6 +945,7 @@
         ybord: s.Outline,
         xshad: s.Shadow,
         yshad: s.Shadow,
+        fe: s.Encoding,
         q: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
       };
       result[s.Name] = { style: s, tag: tag };
@@ -850,7 +962,6 @@
     var styles = compileStyles({
       info: tree.info,
       style: tree.styles.style,
-      format: tree.styles.format,
       defaultStyle: options.defaultStyle || {},
     });
     return {
@@ -866,9 +977,166 @@
     };
   }
 
+  function decompileStyle(ref) {
+    var style = ref.style;
+    var tag = ref.tag;
+
+    var obj = assign({}, style, {
+      PrimaryColour: ("&H" + (tag.a1) + (tag.c1)),
+      SecondaryColour: ("&H" + (tag.a2) + (tag.c2)),
+      OutlineColour: ("&H" + (tag.a3) + (tag.c3)),
+      BackColour: ("&H" + (tag.a4) + (tag.c4)),
+    });
+    return ("Style: " + (stylesFormat.map(function (fmt) { return obj[fmt]; }).join()));
+  }
+
+  var drawingInstructionMap = {
+    M: 'm',
+    L: 'l',
+    C: 'b',
+  };
+
+  function decompileDrawing(ref) {
+    var instructions = ref.instructions;
+
+    return instructions.map(function (ref) {
+      var ref$1;
+
+      var type = ref.type;
+      var points = ref.points;
+      return (
+      (ref$1 = [drawingInstructionMap[type]])
+        .concat.apply(ref$1, points.map(function (ref) {
+          var x = ref.x;
+          var y = ref.y;
+
+          return [x, y];
+      }))
+        .join(' ')
+    );
+    }).join(' ');
+  }
+
+  var ca = function (x) { return function (n) { return function (_) { return ("" + n + x + "&H" + _ + "&"); }; }; };
+  var c = ca('c');
+  var a = ca('a');
+
+  var tagDecompiler = {
+    c1: c(1),
+    c2: c(2),
+    c3: c(3),
+    c4: c(4),
+    a1: a(1),
+    a2: a(2),
+    a3: a(3),
+    a4: a(4),
+    pos: function (_) { return ("pos(" + ([_.x, _.y]) + ")"); },
+    org: function (_) { return ("org(" + ([_.x, _.y]) + ")"); },
+    move: function (_) { return ("move(" + ([_.x1, _.y1, _.x2, _.y2, _.t1, _.t2]) + ")"); },
+    fade: function (_) { return (
+      _.type === 'fad'
+        ? ("fad(" + ([_.t1, _.t2]) + ")")
+        : ("fade(" + ([_.a1, _.a2, _.a3, _.t1, _.t2, _.t3, _.t4]) + ")")
+    ); },
+    clip: function (_) { return ((_.inverse ? 'i' : '') + "clip(" + (_.dots
+        ? ("" + ([_.dots.x1, _.dots.y1, _.dots.x2, _.dots.y2]))
+        : ("" + (_.scale === 1 ? '' : ((_.scale) + ",")) + (decompileDrawing(_.drawing)))) + ")"); },
+    // eslint-disable-next-line no-use-before-define
+    t: function (arr) { return arr.map(function (_) { return ("t(" + ([_.t1, _.t2, _.accel, decompileTag(_.tag)]) + ")"); }).join('\\'); },
+  };
+
+  function decompileTag(tag) {
+    return Object.keys(tag).map(function (key) {
+      var fn = tagDecompiler[key] || (function (_) { return ("" + key + _); });
+      return ("\\" + (fn(tag[key])));
+    }).join('');
+  }
+
+  function decompileSlice(slice) {
+    return slice.fragments.map(function (ref) {
+      var tag = ref.tag;
+      var text = ref.text;
+      var drawing = ref.drawing;
+
+      var tagText = decompileTag(tag);
+      return ("" + (tagText ? ("{" + tagText + "}") : '') + (drawing ? decompileDrawing(drawing) : text));
+    }).join('');
+  }
+
+  function decompileText(dia, style) {
+    return dia.slices
+      .map(function (slice, idx) {
+        var sliceCopy = JSON.parse(JSON.stringify(slice));
+        var ref = sliceCopy.fragments[0];
+        var tag = ref.tag;
+        if (idx) {
+          tag.r = slice.style === dia.style ? '' : slice.style;
+        } else {
+          if (style.Alignment !== dia.alignment) {
+            tag.an = dia.alignment;
+          }
+          ['pos', 'org', 'move', 'fade', 'clip'].forEach(function (key) {
+            if (dia[key]) {
+              tag[key] = dia[key];
+            }
+          });
+        }
+        return sliceCopy;
+      })
+      .map(decompileSlice)
+      .join('');
+  }
+
+  function getMargin(margin, styleMargin) {
+    return margin === styleMargin ? '0000' : margin;
+  }
+
+  function decompileDialogue(dia, style) {
+    return ("Dialogue: " + ([
+      dia.layer,
+      stringifyTime(dia.start),
+      stringifyTime(dia.end),
+      dia.style,
+      dia.name,
+      getMargin(dia.margin.left, style.MarginL),
+      getMargin(dia.margin.right, style.MarginR),
+      getMargin(dia.margin.vertical, style.MarginV),
+      stringifyEffect(dia.effect),
+      decompileText(dia, style) ].join()));
+  }
+
+  function decompile(ref) {
+    var info = ref.info;
+    var width = ref.width;
+    var height = ref.height;
+    var collisions = ref.collisions;
+    var styles = ref.styles;
+    var dialogues = ref.dialogues;
+
+    return [
+      '[Script Info]',
+      stringifyInfo(assign({}, info, {
+        PlayResX: width,
+        PlayResY: height,
+        Collisions: collisions,
+      })),
+      '',
+      '[V4+ Styles]',
+      ("Format: " + (stylesFormat.join(', '))) ].concat( Object.keys(styles).map(function (name) { return decompileStyle(styles[name]); }),
+      [''],
+      ['[Events]'],
+      [("Format: " + (eventsFormat.join(', ')))],
+      dialogues
+        .sort(function (x, y) { return x.start - y.start || x.end - y.end; })
+        .map(function (dia) { return decompileDialogue(dia, styles[dia.style].style); }),
+      [''] ).join('\n');
+  }
+
   exports.compile = compile;
+  exports.decompile = decompile;
   exports.parse = parse;
+  exports.stringify = stringify;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
