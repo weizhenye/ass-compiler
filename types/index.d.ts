@@ -1,58 +1,64 @@
-import { Tags } from "./tags";
+import { ParsedTag, CompiledTag } from './tags';
 
-// Script Info
 interface ScriptInfo {
-    Title: '<untitled>' | string;
+    Title: string;
     ScriptType: 'V4.00' | 'V4.00+' | string;
     WrapStyle: '0' | '1' | '2' | '3';
     PlayResX: string;
-    PlayResY: string
+    PlayResY: string;
     ScaledBorderAndShadow: 'yes' | 'no';
-
     Collisions: 'Normal' | 'Reverse';
     [name: string]: string;
 }
 
-// v4 Styles
-interface ParsedASSStyleObject {
-    Name: string,
-    Fontname: string,
-    Fontsize: string,
-    PrimaryColour: string,
-    SecondaryColour: string,
-    OutlineColour: string,
-    BackColour: string,
-    Bold: string,
-    Italic: string,
-    Underline: string,
-    StrikeOut: string,
-    ScaleX: string,
-    ScaleY: string,
-    Spacing: string,
-    Angle: string,
-    BorderStyle: string,
-    Outline: string,
-    Shadow: string,
-    Alignment: string,
-    MarginL: string,
-    MarginR: string,
-    MarginV: string,
-    Encoding: string,
-}
-
 interface ParsedASSStyles {
     format: string[];
-    style: ParsedASSStyleObject[];
-}
-
-type ParsedASSEventTextParsedTag = {
-    [K in keyof Tags]: Tags[K];
+    style: {
+        Name: string;
+        Fontname: string;
+        Fontsize: string;
+        PrimaryColour: string;
+        SecondaryColour: string;
+        OutlineColour: string;
+        BackColour: string;
+        Bold: string;
+        Italic: string;
+        Underline: string;
+        StrikeOut: string;
+        ScaleX: string;
+        ScaleY: string;
+        Spacing: string;
+        Angle: string;
+        BorderStyle: string;
+        Outline: string;
+        Shadow: string;
+        Alignment: string;
+        MarginL: string;
+        MarginR: string;
+        MarginV: string;
+        Encoding: string;
+    }[];
 }
 
 interface ParsedASSEventTextParsed {
-    tags: ParsedASSEventTextParsedTag[];
+    tags: { [K in keyof ParsedTag]: ParsedTag[K]; }[];
     text: string;
     drawing: string[][];
+}
+
+interface EffectBanner {
+    name: 'banner';
+    delay: number;
+    leftToRight: number;
+    fadeAwayWidth: number;
+}
+
+interface EffectScroll {
+    name: 'scroll up' | 'scroll down';
+    y1: number;
+    y2: number;
+    delay: number;
+    fadeAwayHeight: number;
 }
 
 interface ParsedASSEventText {
@@ -61,7 +67,7 @@ interface ParsedASSEventText {
     parsed: ParsedASSEventTextParsed[];
 }
 
-interface ParsedASSEventObject {
+interface ParsedASSEvent {
     Layer: number;
     Start: number;
     End: number;
@@ -70,15 +76,14 @@ interface ParsedASSEventObject {
     MarginL: number;
     MarginR: number;
     MarginV: number;
-    Effect: any;
+    Effect?: EffectBanner | EffectScroll;
     Text: ParsedASSEventText;
 }
 
-// Events
 interface ParsedASSEvents {
     format: string[];
-    comment: ParsedASSEventObject[];
-    dialogue: ParsedASSEventObject[];
+    comment: ParsedASSEvent[];
+    dialogue: ParsedASSEvent[];
 }
 
 export interface ParsedASS {
@@ -95,8 +100,6 @@ export function parse(text: string): ParsedASS;
 
 export function stringify(obj: ParsedASS): string;
 
-// Compiled Script Info
-
 export interface CompiledASSStyleTag {
     fn: string;
     fs: number;
@@ -108,10 +111,10 @@ export interface CompiledASSStyleTag {
     a3: string;
     c4: string;
     a4: string;
-    b: number;
-    i: number;
-    u: number;
-    s: number;
+    b: 0 | 1;
+    i: 0 | 1;
+    u: 0 | 1;
+    s: 0 | 1;
     fscx: number;
     fscy: number;
     fsp: number;
@@ -120,7 +123,8 @@ export interface CompiledASSStyleTag {
     ybord: number;
     xshad: number;
     yshad: number;
-    q: number;
+    fe: number;
+    q: 0 | 1 | 2 | 3;
 }
 
 export interface CompiledASSStyle {
@@ -141,36 +145,23 @@ export interface CompiledASSStyle {
         Spacing: number;
         Angle: number;
         BorderStyle: 1 | 3;
-        Outline: 0 | 1 | 2 | 3 | 4;
-        Shadow: 0 | 1 | 2 | 3 | 4;
+        Outline: number;
+        Shadow: number;
         Alignment: number;
         MarginL: number;
         MarginR: number;
         MarginV: number;
-        Encoding: 0 | 134 | 136 | number;
+        Encoding: number;
     }
     tag: CompiledASSStyleTag;
 }
 
-export interface DialogueFragment {
-    tag: Tags;
-    text: string;
-    drawing?: DialogueDrawing;
-}
-
-export interface DialogueSlice {
-    style: string;
-    fragments: DialogueFragment[];
-}
-
-export interface DialogueDrawingInstructionPoint {
-    x: number;
-    y: number;
-}
-
 export interface DialogueDrawingInstruction {
     type: 'M' | 'L' | 'C';
-    points: DialogueDrawingInstructionPoint[];
+    points: {
+        x: number;
+        y: number;
+    }[];
 }
 
 export interface DialogueDrawing {
@@ -182,16 +173,15 @@ export interface DialogueDrawing {
     height: number;
 }
 
-export interface DialogueClip {
-    inverse: boolean;
-    scale: number;
+export interface DialogueFragment {
+    tag: CompiledTag;
+    text: string;
     drawing?: DialogueDrawing;
-    dots?: {
-        x1: number;
-        y1: number;
-        x2: number;
-        y2: number;
-    }
+}
+
+export interface DialogueSlice {
+    style: string;
+    fragments: DialogueFragment[];
 }
 
 export interface Dialogue {
@@ -205,7 +195,7 @@ export interface Dialogue {
         right: number;
         vertical: number;
     }
-    effect: any;
+    effect?: EffectBanner | EffectScroll;
     alignment: number;
     slices: DialogueSlice[];
     pos?: {
@@ -238,7 +228,17 @@ export interface Dialogue {
         t3: number;
         t4: number;
     };
-    clip?: DialogueClip;
+    clip?: {
+        inverse: boolean;
+        scale: number;
+        drawing?: DialogueDrawing;
+        dots?: {
+            x1: number;
+            y1: number;
+            x2: number;
+            y2: number;
+        }
+    }
 }
 
 export interface CompiledASS {
