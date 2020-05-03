@@ -20,12 +20,22 @@ npm install ass-compiler
 
 ## Usage
 
+You can use `parse` or `compile` as your need.
+
 ```js
 import { parse, stringify, compile, decompile } from 'ass-compiler';
 
+// ASS file content
+const text = `
+[Script Info]
+; ...
+`;
+
+// parse just turn ASS text into JSON
 const parsedASS = parse(text);
 const stringifiedText = stringify(parsedASS);
 
+// compile will get rid of invalid tags, merge duplicated tags, transform drawings, etc.
 const compiledASS = compile(text, options);
 const decompiledText = decompile(compiledASS);
 ```
