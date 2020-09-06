@@ -3,6 +3,7 @@ import { parseDrawing } from '../../src/parser/drawing.js';
 
 describe('drawing parser', () => {
   it('should parse drawing', () => {
+    expect(parseDrawing('')).to.deep.equal([]);
     expect(parseDrawing('m0 0l 1 0 n 2 2')).to.deep.equal([
       ['m', '0', '0'],
       ['l', '1', '0'],
