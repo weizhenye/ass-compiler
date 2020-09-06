@@ -30,6 +30,7 @@
   }
 
   function parseDrawing(text) {
+    if (!text) { return []; }
     return text
       .toLowerCase()
       // numbers
