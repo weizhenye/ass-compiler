@@ -154,8 +154,11 @@
     var tags = [];
     var depth = 0;
     var str = '';
-    for (var i = 0; i < text.length; i++) {
-      var x = text[i];
+    // `\b\c` -> `b\c\`
+    // `a\b\c` -> `b\c\`
+    var transText = text.split('\\').slice(1).concat('').join('\\');
+    for (var i = 0; i < transText.length; i++) {
+      var x = transText[i];
       if (x === '(') { depth++; }
       if (x === ')') { depth--; }
       if (depth < 0) { depth = 0; }
@@ -168,7 +171,6 @@
         str += x;
       }
     }
-    tags.push(str);
     return tags.map(parseTag);
   }
 
