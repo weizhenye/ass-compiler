@@ -36,4 +36,10 @@ describe('tags parser', () => {
   it('should avoid ReDoS', () => {
     expect(parseTags('\\foo(11111111111111111111111111111(2(3)2)1)x)')).to.deep.equal([{}]);
   });
+
+  it('should ignore tags not starts with `\\`', () => {
+    expect(parseTags('Cell phone display')).to.deep.equal([]);
+    expect(parseTags('ignored\\an5')).to.deep.equal([{ an: 5 }]);
+    expect(parseTags('\\an5\\')).to.deep.equal([{ an: 5 }]);
+  });
 });

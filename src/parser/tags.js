@@ -4,8 +4,11 @@ export function parseTags(text) {
   const tags = [];
   let depth = 0;
   let str = '';
-  for (let i = 0; i < text.length; i++) {
-    const x = text[i];
+  // `\b\c` -> `b\c\`
+  // `a\b\c` -> `b\c\`
+  const transText = text.split('\\').slice(1).concat('').join('\\');
+  for (let i = 0; i < transText.length; i++) {
+    const x = transText[i];
     if (x === '(') depth++;
     if (x === ')') depth--;
     if (depth < 0) depth = 0;
@@ -18,6 +21,5 @@ export function parseTags(text) {
       str += x;
     }
   }
-  tags.push(str);
   return tags.map(parseTag);
 }
