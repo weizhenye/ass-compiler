@@ -87,7 +87,7 @@
     } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
       (assign = text.match(/^alpha&?H?([0-9a-f]+)/i), tag.alpha = assign[1]);
       tag.alpha = ("00" + (tag.alpha)).slice(-2);
-    } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
+    } else if (/^(?:pos|org|move|fad|fade)\([^)]+/.test(text)) {
       var ref$3 = text.match(/^(\w+)\((.*?)\)?$/);
       var key = ref$3[1];
       var value = ref$3[2];
@@ -95,7 +95,7 @@
         .trim()
         .split(/\s*,\s*/)
         .map(Number);
-    } else if (/^i?clip/.test(text)) {
+    } else if (/^i?clip\([^)]+/.test(text)) {
       var p = text
         .match(/^i?clip\((.*?)\)?$/)[1]
         .trim()
