@@ -34,13 +34,13 @@ export function parseTag(text) {
   } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
     [, tag.alpha] = text.match(/^alpha&?H?([0-9a-f]+)/i);
     tag.alpha = `00${tag.alpha}`.slice(-2);
-  } else if (/^(?:pos|org|move|fad|fade)\(/.test(text)) {
+  } else if (/^(?:pos|org|move|fad|fade)\([^)]+/.test(text)) {
     const [, key, value] = text.match(/^(\w+)\((.*?)\)?$/);
     tag[key] = value
       .trim()
       .split(/\s*,\s*/)
       .map(Number);
-  } else if (/^i?clip/.test(text)) {
+  } else if (/^i?clip\([^)]+/.test(text)) {
     const p = text
       .match(/^i?clip\((.*?)\)?$/)[1]
       .trim()

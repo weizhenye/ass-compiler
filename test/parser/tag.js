@@ -250,4 +250,12 @@ describe('tag parser', () => {
       { clip },
     ]);
   });
+
+  it('should ignore tags without content', () => {
+    ['pos', 'org', 'move', 'fad', 'fade', 'clip', 'iclip', 't'].forEach((tag) => {
+      expect(parseTag(`${tag}`)).to.deep.equal({});
+      expect(parseTag(`${tag}(`)).to.deep.equal({});
+      expect(parseTag(`${tag}()`)).to.deep.equal({});
+    });
+  });
 });
