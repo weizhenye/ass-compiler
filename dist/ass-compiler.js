@@ -238,10 +238,6 @@
     return dia;
   }
 
-  function parseFormat(text) {
-    return text.match(/Format\s*:\s*(.*)/i)[1].split(/\s*,\s*/);
-  }
-
   var assign = Object.assign || (
     /* istanbul ignore next */
     function assign(target) {
@@ -300,7 +296,7 @@
       }
       if (state === 2) {
         if (/^Format\s*:/i.test(line)) {
-          tree.styles.format = parseFormat(line);
+          tree.styles.format = stylesFormat.concat();
         }
         if (/^Style\s*:/i.test(line)) {
           tree.styles.style.push(parseStyle(line, tree.styles.format));
@@ -308,7 +304,7 @@
       }
       if (state === 3) {
         if (/^Format\s*:/i.test(line)) {
-          tree.events.format = parseFormat(line);
+          tree.events.format = eventsFormat.concat();
         }
         if (/^(?:Comment|Dialogue)\s*:/i.test(line)) {
           var ref$1 = line.match(/^(\w+?)\s*:\s*(.*)/i);
