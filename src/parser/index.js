@@ -1,6 +1,6 @@
 import { parseDialogue } from './dialogue.js';
-import { parseFormat } from './format.js';
 import { parseStyle } from './style.js';
+import { stylesFormat, eventsFormat } from '../utils.js';
 
 export function parse(text) {
   const tree = {
@@ -28,7 +28,7 @@ export function parse(text) {
     }
     if (state === 2) {
       if (/^Format\s*:/i.test(line)) {
-        tree.styles.format = parseFormat(line);
+        tree.styles.format = stylesFormat.concat();
       }
       if (/^Style\s*:/i.test(line)) {
         tree.styles.style.push(parseStyle(line, tree.styles.format));
@@ -36,7 +36,7 @@ export function parse(text) {
     }
     if (state === 3) {
       if (/^Format\s*:/i.test(line)) {
-        tree.events.format = parseFormat(line);
+        tree.events.format = eventsFormat.concat();
       }
       if (/^(?:Comment|Dialogue)\s*:/i.test(line)) {
         const [, key, value] = line.match(/^(\w+?)\s*:\s*(.*)/i);
