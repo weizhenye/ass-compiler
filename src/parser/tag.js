@@ -29,8 +29,8 @@ export function parseTag(text) {
     const [, num, color] = text.match(/^(\d?)c&?H?(\w*)/);
     tag[`c${num || 1}`] = color && `000000${color}`.slice(-6);
   } else if (/^\da&?H?[0-9a-f]+/i.test(text)) {
-    const [, num, alpha] = text.match(/^(\d)a&?H?(\w\w)/);
-    tag[`a${num}`] = alpha;
+    const [, num, alpha] = text.match(/^(\d)a&?H?([0-9a-f]+)/i);
+    tag[`a${num}`] = `00${alpha}`.slice(-2);
   } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
     [, tag.alpha] = text.match(/^alpha&?H?([0-9a-f]+)/i);
     tag.alpha = `00${tag.alpha}`.slice(-2);

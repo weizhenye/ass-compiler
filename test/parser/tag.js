@@ -115,6 +115,7 @@ describe('tag parser', () => {
     expect(parseTag('1a&FF')).to.deep.equal({ a1: 'FF' });
     expect(parseTag('1aFF')).to.deep.equal({ a1: 'FF' });
     expect(parseTag('1aHFF')).to.deep.equal({ a1: 'FF' });
+    expect(parseTag('1a5')).to.deep.equal({ a1: '05' });
     expect(parseTag('alphaFF')).to.deep.equal({ alpha: 'FF' });
     expect(parseTag('alpha&HFF&')).to.deep.equal({ alpha: 'FF' });
     expect(parseTag('alpha&HFF')).to.deep.equal({ alpha: 'FF' });
