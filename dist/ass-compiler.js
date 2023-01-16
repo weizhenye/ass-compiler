@@ -80,10 +80,10 @@
       var color = ref$1[2];
       tag[("c" + (num || 1))] = color && ("000000" + color).slice(-6);
     } else if (/^\da&?H?[0-9a-f]+/i.test(text)) {
-      var ref$2 = text.match(/^(\d)a&?H?(\w\w)/);
+      var ref$2 = text.match(/^(\d)a&?H?([0-9a-f]+)/i);
       var num$1 = ref$2[1];
       var alpha = ref$2[2];
-      tag[("a" + num$1)] = alpha;
+      tag[("a" + num$1)] = ("00" + alpha).slice(-2);
     } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
       (assign = text.match(/^alpha&?H?([0-9a-f]+)/i), tag.alpha = assign[1]);
       tag.alpha = ("00" + (tag.alpha)).slice(-2);
