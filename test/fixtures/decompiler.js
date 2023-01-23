@@ -146,6 +146,26 @@ export const compiled = {
     {
       layer: 0,
       start: 0,
+      end: 4,
+      style: 'Default',
+      name: '',
+      margin: {
+        left: 1,
+        right: 2,
+        vertical: 3,
+      },
+      effect: null,
+      alignment: 2,
+      slices: [
+        {
+          style: 'Default',
+          fragments: [],
+        },
+      ],
+    },
+    {
+      layer: 0,
+      start: 0,
       end: 5,
       style: 'Default',
       name: '',
@@ -322,6 +342,7 @@ Style: Alt,Times New Roman,40,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.00,0:00:04.00,Default,,1,2,3,,This is a test of the ASS format and some basic features in it.
+Dialogue: 0,0:00:00.00,0:00:04.00,Default,,1,2,3,,
 Dialogue: 0,0:00:00.00,0:00:05.00,Default,,0000,0000,0000,,This is a test of the ASS format and some basic features in it.
 Dialogue: 0,0:00:11.00,0:00:13.00,Default,,0000,0000,0000,,{\\an9}Upper right
 Dialogue: 0,0:00:24.00,0:00:26.00,Default,,0000,0000,0000,,Also {\\rAlt}switching to a different style {\\r}inline

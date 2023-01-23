@@ -71,6 +71,7 @@ export function decompileSlice(slice) {
 
 export function decompileText(dia, style) {
   return dia.slices
+    .filter((slice) => slice.fragments.length)
     .map((slice, idx) => {
       const sliceCopy = JSON.parse(JSON.stringify(slice));
       const { tag } = sliceCopy.fragments[0];
