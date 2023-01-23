@@ -126,6 +126,12 @@ describe('tag parser', () => {
     expect(parseTag('alpha&H12X34')).to.deep.equal({ alpha: '12' });
   });
 
+  it('should ignore upper case tags', () => {
+    expect(parseTag('C')).to.deep.equal({});
+    expect(parseTag('1A&HFF&')).to.deep.equal({});
+    expect(parseTag('aLpHaFF')).to.deep.equal({});
+  });
+
   it('should parse pos,org,move,fad,fade', () => {
     ['pos', 'org', 'move', 'fad', 'fade'].forEach((tag) => {
       expect(parseTag(`${tag}(0,1 ,2, 3)`)).to.deep.equal({
