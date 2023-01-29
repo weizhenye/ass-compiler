@@ -74,17 +74,17 @@
       tag.r = text.slice(1);
     } else if (/^fs[\d+-]/.test(text)) {
       tag.fs = text.slice(2);
-    } else if (/^\d?c&?H?[0-9a-f]+|^\d?c$/i.test(text)) {
+    } else if (/^\d?c&?H?[0-9a-fA-F]+|^\d?c$/.test(text)) {
       var ref$1 = text.match(/^(\d?)c&?H?(\w*)/);
       var num = ref$1[1];
       var color = ref$1[2];
       tag[("c" + (num || 1))] = color && ("000000" + color).slice(-6);
-    } else if (/^\da&?H?[0-9a-f]+/i.test(text)) {
+    } else if (/^\da&?H?[0-9a-fA-F]+/.test(text)) {
       var ref$2 = text.match(/^(\d)a&?H?([0-9a-f]+)/i);
       var num$1 = ref$2[1];
       var alpha = ref$2[2];
       tag[("a" + num$1)] = ("00" + alpha).slice(-2);
-    } else if (/^alpha&?H?[0-9a-f]+/i.test(text)) {
+    } else if (/^alpha&?H?[0-9a-fA-F]+/.test(text)) {
       (assign = text.match(/^alpha&?H?([0-9a-f]+)/i), tag.alpha = assign[1]);
       tag.alpha = ("00" + (tag.alpha)).slice(-2);
     } else if (/^(?:pos|org|move|fad|fade)\([^)]+/.test(text)) {
@@ -259,6 +259,16 @@
   var stylesFormat = ['Name', 'Fontname', 'Fontsize', 'PrimaryColour', 'SecondaryColour', 'OutlineColour', 'BackColour', 'Bold', 'Italic', 'Underline', 'StrikeOut', 'ScaleX', 'ScaleY', 'Spacing', 'Angle', 'BorderStyle', 'Outline', 'Shadow', 'Alignment', 'MarginL', 'MarginR', 'MarginV', 'Encoding'];
   var eventsFormat = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];
 
+  function parseFormat(text) {
+    var fields = stylesFormat.concat(eventsFormat);
+    return text.match(/Format\s*:\s*(.*)/i)[1]
+      .split(/\s*,\s*/)
+      .map(function (field) {
+        var caseField = fields.find(function (f) { return f.toLowerCase() === field.toLowerCase(); });
+        return caseField || field;
+      });
+  }
+
   function parseStyle(text, format) {
     var values = text.match(/Style\s*:\s*(.*)/i)[1].split(/\s*,\s*/);
     return assign.apply(void 0, [ {} ].concat( format.map(function (fmt, idx) {
@@ -296,7 +306,7 @@
       }
       if (state === 2) {
         if (/^Format\s*:/i.test(line)) {
-          tree.styles.format = stylesFormat.concat();
+          tree.styles.format = parseFormat(line);
         }
         if (/^Style\s*:/i.test(line)) {
           tree.styles.style.push(parseStyle(line, tree.styles.format));
@@ -304,7 +314,7 @@
       }
       if (state === 3) {
         if (/^Format\s*:/i.test(line)) {
-          tree.events.format = eventsFormat.concat();
+          tree.events.format = parseFormat(line);
         }
         if (/^(?:Comment|Dialogue)\s*:/i.test(line)) {
           var ref$1 = line.match(/^(\w+?)\s*:\s*(.*)/i);
@@ -1064,6 +1074,7 @@
 
   function decompileText(dia, style) {
     return dia.slices
+      .filter(function (slice) { return slice.fragments.length; })
       .map(function (slice, idx) {
         var sliceCopy = JSON.parse(JSON.stringify(slice));
         var ref = sliceCopy.fragments[0];
