@@ -30,4 +30,20 @@ describe('dialogue parser', () => {
       parsed: [{ tags: [], text: 'text,with,comma', drawing: [] }],
     });
   });
+
+  it('should parse dialogue without standard events format', () => {
+    text = '0,0:00:01.00,0:00:02.00,Default,text';
+    const format = ['Layer', 'Start', 'End', 'Style', 'Text'];
+    expect(parseDialogue(text, format)).to.deep.equal({
+      Layer: 0,
+      Start: 1,
+      End: 2,
+      Style: 'Default',
+      Text: {
+        raw: 'text',
+        combined: 'text',
+        parsed: [{ tags: [], text: 'text', drawing: [] }],
+      },
+    });
+  });
 });
