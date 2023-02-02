@@ -117,3 +117,47 @@ Comment: 0,0:00:00.00,0:00:04.00,Default,,0000,0000,0000,Banner;5;1;80,text
 Dialogue: 0,0:00:00.00,0:00:05.00,Default,,0000,8,0000,,text
 Dialogue: 0,0:00:00.00,0:00:05.00,Default,,0000,8,0000,,{\\p1}m 0 0 l 1 1
 `;
+
+export const parsed2 = {
+  info: {
+    Title: 'Title',
+    ScriptType: 'v4.00+',
+  },
+  styles: {
+    format: ['Name', 'Fontname', 'Fontsize', 'Unknown'],
+    style: [{
+      Name: 'Default',
+      Fontname: 'Arial',
+      Fontsize: '20',
+      Unknown: '1',
+    }],
+  },
+  events: {
+    format: ['Layer', 'Start', 'End', 'Style', 'Text'],
+    comment: [],
+    dialogue: [{
+      Layer: 0,
+      Start: 0,
+      End: 5,
+      Style: 'Default',
+      Text: {
+        raw: 'text',
+        combined: 'text',
+        parsed: [{ tags: [], text: 'text', drawing: [] }],
+      },
+    }],
+  },
+};
+
+export const stringified2 = `[Script Info]
+Title: Title
+ScriptType: v4.00+
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, Unknown
+Style: Default,Arial,20,1
+
+[Events]
+Format: Layer, Start, End, Style, Text
+Dialogue: 0,0:00:00.00,0:00:05.00,Default,text
+`;

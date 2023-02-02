@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { stringifyTime, stringifyEffect, stringifyEvent, stringifyTag, stringify } from '../src/stringifier.js';
 import { eventsFormat } from '../src/utils.js';
-import { parsed, stringified } from './fixtures/stringifier.js';
+import { parsed, stringified, parsed2, stringified2 } from './fixtures/stringifier.js';
 
 describe('ASS stringifier', () => {
   it('should stringify time', () => {
@@ -53,6 +53,10 @@ describe('ASS stringifier', () => {
 
   it('should stringify ASS', () => {
     expect(stringify(parsed)).to.equal(stringified);
+  });
+
+  it('should stringify style format from source', () => {
+    expect(stringify(parsed2)).to.equal(stringified2);
   });
 
   describe('tag stringifier', () => {

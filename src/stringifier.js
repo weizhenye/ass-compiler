@@ -1,5 +1,3 @@
-import { stylesFormat, eventsFormat } from './utils.js';
-
 export function stringifyInfo(info) {
   return Object.keys(info).map((key) => `${key}: ${info[key]}`).join('\n');
 }
@@ -60,20 +58,24 @@ export function stringifyText(Text) {
   }).join('');
 }
 
-export function stringifyEvent(event) {
-  const m0 = '0000';
-  return [
-    event.Layer,
-    stringifyTime(event.Start),
-    stringifyTime(event.End),
-    event.Style,
-    event.Name,
-    event.MarginL || m0,
-    event.MarginR || m0,
-    event.MarginV || m0,
-    stringifyEffect(event.Effect),
-    stringifyText(event.Text),
-  ].join();
+export function stringifyEvent(event, format) {
+  return format.map((fmt) => {
+    switch (fmt) {
+      case 'Start':
+      case 'End':
+        return stringifyTime(event[fmt]);
+      case 'MarginL':
+      case 'MarginR':
+      case 'MarginV':
+        return event[fmt] || '0000';
+      case 'Effect':
+        return stringifyEffect(event[fmt]);
+      case 'Text':
+        return stringifyText(event.Text);
+      default:
+        return event[fmt];
+    }
+  }).join();
 }
 
 export function stringify({ info, styles, events }) {
@@ -82,17 +84,17 @@ export function stringify({ info, styles, events }) {
     stringifyInfo(info),
     '',
     '[V4+ Styles]',
-    `Format: ${stylesFormat.join(', ')}`,
-    ...styles.style.map((style) => `Style: ${stylesFormat.map((fmt) => style[fmt]).join()}`),
+    `Format: ${styles.format.join(', ')}`,
+    ...styles.style.map((style) => `Style: ${styles.format.map((fmt) => style[fmt]).join()}`),
     '',
     '[Events]',
-    `Format: ${eventsFormat.join(', ')}`,
+    `Format: ${events.format.join(', ')}`,
     ...[]
       .concat(...['Comment', 'Dialogue'].map((type) => (
         events[type.toLowerCase()].map((dia) => ({
           start: dia.Start,
           end: dia.End,
-          string: `${type}: ${stringifyEvent(dia)}`,
+          string: `${type}: ${stringifyEvent(dia, events.format)}`,
         }))
       )))
       .sort((a, b) => (a.start - b.start) || (a.end - b.end))

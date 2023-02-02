@@ -349,3 +349,85 @@ Dialogue: 0,0:00:24.00,0:00:26.00,Default,,0000,0000,0000,,Also {\\rAlt}switchin
 Dialogue: 0,0:00:26.00,0:00:28.00,Default,,0000,0000,0000,,{\\an5\\pos(258,131)}Positioning... this line should be in an odd place
 Dialogue: 0,0:00:38.00,0:00:40.00,Default,,0000,0000,0000,,{\\p1}m 0 0 l 1 1
 `;
+
+export const compiled2 = {
+  info: {
+    Title: 'Default Aegisub file',
+    ScriptType: 'v4.00+',
+  },
+  width: 640,
+  height: 480,
+  collisions: 'Normal',
+  styles: {
+    Default: {
+      style: {
+        Name: 'Default',
+        Fontname: 'Arial',
+        Fontsize: 16,
+        PrimaryColour: '&Hffffff',
+        SecondaryColour: '&Hffffff',
+        OutlineColour: '&H0',
+        BackColour: '&H0',
+        Bold: 0,
+        Italic: 0,
+        Underline: 0,
+        StrikeOut: 0,
+        ScaleX: 100,
+        ScaleY: 100,
+        Spacing: 0,
+        Angle: 0,
+        BorderStyle: 1,
+        Outline: 1,
+        Shadow: 0,
+        Alignment: 2,
+        MarginL: 10,
+        MarginR: 10,
+        MarginV: 10,
+        Encoding: 0,
+        AlphaLevel: 0,
+      },
+      tag: {
+        fn: 'Arial',
+        fs: 16,
+        c1: 'ffffff',
+        a1: '00',
+        c2: 'ffffff',
+        a2: '00',
+        c3: '000000',
+        a3: '00',
+        c4: '000000',
+        a4: '00',
+        b: 0,
+        i: 0,
+        u: 0,
+        s: 0,
+        fscx: 100,
+        fscy: 100,
+        fsp: 0,
+        frz: 0,
+        xbord: 1,
+        ybord: 1,
+        xshad: 0,
+        yshad: 0,
+        fe: 0,
+        q: 2,
+      },
+    },
+  },
+  dialogues: [],
+};
+
+export const decompiled2 = `[Script Info]
+Title: Default Aegisub file
+ScriptType: v4.00+
+PlayResX: 640
+PlayResY: 480
+Collisions: Normal
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,16,&H00ffffff,&H00ffffff,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,1,0,2,10,10,10,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+`;

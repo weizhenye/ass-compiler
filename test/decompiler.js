@@ -1,10 +1,14 @@
 import { expect } from 'chai';
 import { decompile, decompileDrawing, decompileTag } from '../src/decompiler.js';
-import { compiled, decompiled } from './fixtures/decompiler.js';
+import { compiled, decompiled, compiled2, decompiled2 } from './fixtures/decompiler.js';
 
 describe('ASS decompiler', () => {
   it('should decompile ASS', () => {
     expect(decompile(compiled)).to.equal(decompiled);
+  });
+
+  it('should add default value', () => {
+    expect(decompile(compiled2)).to.equal(decompiled2);
   });
 
   it('should decompile drawing', () => {
