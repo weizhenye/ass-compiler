@@ -391,19 +391,24 @@
     }).join('');
   }
 
-  function stringifyEvent(event) {
-    var m0 = '0000';
-    return [
-      event.Layer,
-      stringifyTime(event.Start),
-      stringifyTime(event.End),
-      event.Style,
-      event.Name,
-      event.MarginL || m0,
-      event.MarginR || m0,
-      event.MarginV || m0,
-      stringifyEffect(event.Effect),
-      stringifyText(event.Text) ].join();
+  function stringifyEvent(event, format) {
+    return format.map(function (fmt) {
+      switch (fmt) {
+        case 'Start':
+        case 'End':
+          return stringifyTime(event[fmt]);
+        case 'MarginL':
+        case 'MarginR':
+        case 'MarginV':
+          return event[fmt] || '0000';
+        case 'Effect':
+          return stringifyEffect(event[fmt]);
+        case 'Text':
+          return stringifyText(event.Text);
+        default:
+          return event[fmt];
+      }
+    }).join();
   }
 
   function stringify(ref) {
@@ -417,16 +422,16 @@
       stringifyInfo(info),
       '',
       '[V4+ Styles]',
-      ("Format: " + (stylesFormat.join(', '))) ].concat( styles.style.map(function (style) { return ("Style: " + (stylesFormat.map(function (fmt) { return style[fmt]; }).join())); }),
+      ("Format: " + (styles.format.join(', '))) ].concat( styles.style.map(function (style) { return ("Style: " + (styles.format.map(function (fmt) { return style[fmt]; }).join())); }),
       [''],
       ['[Events]'],
-      [("Format: " + (eventsFormat.join(', ')))],
+      [("Format: " + (events.format.join(', ')))],
       (ref$1 = [])
         .concat.apply(ref$1, ['Comment', 'Dialogue'].map(function (type) { return (
           events[type.toLowerCase()].map(function (dia) { return ({
             start: dia.Start,
             end: dia.End,
-            string: (type + ": " + (stringifyEvent(dia))),
+            string: (type + ": " + (stringifyEvent(dia, events.format))),
           }); })
         ); }))
         .sort(function (a, b) { return (a.start - b.start) || (a.end - b.end); })
@@ -907,9 +912,9 @@
     var defaultStyle = ref.defaultStyle;
 
     var result = {};
-    var styles = [assign({}, DEFAULT_STYLE, defaultStyle, { Name: 'Default' })].concat(style);
+    var styles = [assign({}, defaultStyle, { Name: 'Default' })].concat(style);
     var loop = function ( i ) {
-      var s = styles[i];
+      var s = assign({}, DEFAULT_STYLE, styles[i]);
       // this behavior is same as Aegisub by black-box testing
       if (/^(\*+)Default$/.test(s.Name)) {
         s.Name = 'Default';
