@@ -16,6 +16,9 @@ export function stringifyTime(t) {
 
 export function stringifyEffect(eff) {
   if (!eff) return '';
+  if (typeof eff === 'string') {
+    return eff;
+  }
   if (eff.name === 'banner') {
     return `Banner;${eff.delay};${eff.leftToRight};${eff.fadeAwayWidth}`;
   }
