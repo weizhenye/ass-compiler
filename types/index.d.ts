@@ -76,7 +76,7 @@ interface ParsedASSEvent {
     MarginL: number;
     MarginR: number;
     MarginV: number;
-    Effect?: EffectBanner | EffectScroll;
+    Effect?: EffectBanner | EffectScroll | string;
     Text: ParsedASSEventText;
 }
 
