@@ -26,6 +26,9 @@
         fadeAwayHeight: param[4] * 1 || 0,
       };
     }
+    if (text !== '') {
+      return { name: text };
+    }
     return null;
   }
 
@@ -349,7 +352,10 @@
     if (eff.name === 'banner') {
       return ("Banner;" + (eff.delay) + ";" + (eff.leftToRight) + ";" + (eff.fadeAwayWidth));
     }
-    return ((eff.name.replace(/^\w/, function (x) { return x.toUpperCase(); })) + ";" + (eff.y1) + ";" + (eff.y2) + ";" + (eff.delay) + ";" + (eff.fadeAwayHeight));
+    if (/^scroll\s/.test(eff.name)) {
+      return ((eff.name.replace(/^\w/, function (x) { return x.toUpperCase(); })) + ";" + (eff.y1) + ";" + (eff.y2) + ";" + (eff.delay) + ";" + (eff.fadeAwayHeight));
+    }
+    return eff.name;
   }
 
   function stringifyDrawing(drawing) {
