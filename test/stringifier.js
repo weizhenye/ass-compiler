@@ -30,6 +30,9 @@ describe('ASS stringifier', () => {
       leftToRight: 1,
       fadeAwayWidth: 80,
     })).to.equal('Banner;5;1;80');
+    expect(stringifyEffect({
+      name: 'unknown',
+    })).to.equal('unknown');
   });
 
   it('should stringify event', () => {

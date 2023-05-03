@@ -73,7 +73,11 @@ describe('effect parser', () => {
     });
   });
 
-  it('should ignore wrong syntax', () => {
-    expect(parseEffect('unknown')).to.equal(null);
+  it('should return EffectUnknown if non-standard, but non empty', () => {
+    expect(parseEffect('unknown')).to.deep.equal({ name: 'unknown' });
+  });
+
+  it('should return null if empty', () => {
+    expect(parseEffect('')).to.equal(null);
   });
 });

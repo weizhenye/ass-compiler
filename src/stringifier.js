@@ -19,7 +19,10 @@ export function stringifyEffect(eff) {
   if (eff.name === 'banner') {
     return `Banner;${eff.delay};${eff.leftToRight};${eff.fadeAwayWidth}`;
   }
-  return `${eff.name.replace(/^\w/, (x) => x.toUpperCase())};${eff.y1};${eff.y2};${eff.delay};${eff.fadeAwayHeight}`;
+  if (/^scroll\s/.test(eff.name)) {
+    return `${eff.name.replace(/^\w/, (x) => x.toUpperCase())};${eff.y1};${eff.y2};${eff.delay};${eff.fadeAwayHeight}`;
+  }
+  return eff.name;
 }
 
 export function stringifyDrawing(drawing) {
