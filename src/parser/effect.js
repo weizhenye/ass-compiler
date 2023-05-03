@@ -21,7 +21,7 @@ export function parseEffect(text) {
     };
   }
   if (text !== '') {
-    return text;
+    return { name: text };
   }
   return null;
 }

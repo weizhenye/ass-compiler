@@ -61,6 +61,10 @@ interface EffectScroll {
     fadeAwayHeight: number;
 }
 
+interface EffectUnknown {
+    name: string;
+}
+
 interface ParsedASSEventText {
     raw: string;
     combined: string;
@@ -76,7 +80,7 @@ interface ParsedASSEvent {
     MarginL: number;
     MarginR: number;
     MarginV: number;
-    Effect?: EffectBanner | EffectScroll | string;
+    Effect?: EffectBanner | EffectScroll | EffectUnknown;
     Text: ParsedASSEventText;
 }
 
@@ -195,7 +199,7 @@ export interface Dialogue {
         right: number;
         vertical: number;
     }
-    effect?: EffectBanner | EffectScroll;
+    effect?: EffectBanner | EffectScroll | EffectUnknown;
     alignment: number;
     slices: DialogueSlice[];
     pos?: {

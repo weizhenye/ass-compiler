@@ -26,9 +26,6 @@
         fadeAwayHeight: param[4] * 1 || 0,
       };
     }
-    if (text !== '') {
-      return text;
-    }
     return null;
   }
 
