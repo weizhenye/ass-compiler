@@ -99,7 +99,7 @@ export interface CompiledTag {
         t1: number;
         t2: number;
         accel: number;
-        tags: CompiledTag;
+        tag: CompiledTag;
     }[];
     u?: 0 | 1;
     xbord?: number;
