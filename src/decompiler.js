@@ -74,7 +74,7 @@ export function decompileText(dia, style) {
     .filter((slice) => slice.fragments.length)
     .map((slice, idx) => {
       const sliceCopy = JSON.parse(JSON.stringify(slice));
-      const { tag } = sliceCopy.fragments[0];
+      const tag = {};
       if (idx) {
         tag.r = slice.style === dia.style ? '' : slice.style;
       } else {
@@ -87,6 +87,8 @@ export function decompileText(dia, style) {
           }
         });
       }
+      // make sure additional tags are first
+      sliceCopy.fragments[0].tag = Object.assign(tag, sliceCopy.fragments[0].tag);
       return sliceCopy;
     })
     .map(decompileSlice)
