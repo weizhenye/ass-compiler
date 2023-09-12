@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { decompile, decompileDrawing, decompileTag } from '../src/decompiler.js';
+import { decompile, decompileDrawing, decompileTag, decompileText } from '../src/decompiler.js';
 import { compiled, decompiled, compiled2, decompiled2 } from './fixtures/decompiler.js';
 
 describe('ASS decompiler', () => {
@@ -125,6 +125,28 @@ describe('ASS decompiler', () => {
           },
         ],
       })).to.deep.equal('\\t(1,2,3,\\clip(11,21,12,22))\\t(4,5,6,\\b1\\fr30)');
+    });
+  });
+  describe('text decompiler', () => {
+    it('should put \\r to the beginning of tags', () => {
+      expect(decompileText({
+        alignment: 1,
+        slices: [{
+          style: 'Default',
+          fragments: [{
+            text: 'Hello',
+            tag: { t: [{ t1: 0, t2: 1000, accel: 1, tag: { c1: 'FF' } }] },
+          }],
+        }, {
+          style: 'Nondefault',
+          fragments: [{
+            text: 'World',
+            tag: { t: [{ t1: 1000, t2: 2000, accel: 1, tag: { c1: 'FFFF' } }] },
+          }],
+        }],
+      }, {
+        Alignment: 1,
+      })).to.equal('{\\t(0,1000,1,\\1c&HFF&)}Hello{\\rNondefault\\t(1000,2000,1,\\1c&HFFFF&)}World');
     });
   });
 });
