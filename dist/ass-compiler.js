@@ -1088,8 +1088,7 @@
       .filter(function (slice) { return slice.fragments.length; })
       .map(function (slice, idx) {
         var sliceCopy = JSON.parse(JSON.stringify(slice));
-        var ref = sliceCopy.fragments[0];
-        var tag = ref.tag;
+        var tag = {};
         if (idx) {
           tag.r = slice.style === dia.style ? '' : slice.style;
         } else {
@@ -1102,6 +1101,8 @@
             }
           });
         }
+        // make sure additional tags are first
+        sliceCopy.fragments[0].tag = Object.assign(tag, sliceCopy.fragments[0].tag);
         return sliceCopy;
       })
       .map(decompileSlice)
