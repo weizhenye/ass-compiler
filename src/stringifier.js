@@ -6,7 +6,8 @@ function pad00(n) {
   return `00${n}`.slice(-2);
 }
 
-export function stringifyTime(t) {
+export function stringifyTime(tf) {
+  const t = Number.parseFloat(tf.toFixed(2));
   const ms = t.toFixed(2).slice(-2);
   const s = (t | 0) % 60;
   const m = (t / 60 | 0) % 60;
