@@ -339,7 +339,8 @@
     return ("00" + n).slice(-2);
   }
 
-  function stringifyTime(t) {
+  function stringifyTime(tf) {
+    var t = Number.parseFloat(tf.toFixed(2));
     var ms = t.toFixed(2).slice(-2);
     var s = (t | 0) % 60;
     var m = (t / 60 | 0) % 60;
