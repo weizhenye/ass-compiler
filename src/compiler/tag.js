@@ -2,7 +2,7 @@ import { compileDrawing } from './drawing.js';
 import { assign } from '../utils.js';
 
 const tTags = [
-  'fs', 'clip',
+  'fs', 'fsp', 'clip',
   'c1', 'c2', 'c3', 'c4', 'a1', 'a2', 'a3', 'a4', 'alpha',
   'fscx', 'fscy', 'fax', 'fay', 'frx', 'fry', 'frz', 'fr',
   'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad',

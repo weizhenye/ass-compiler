@@ -119,6 +119,7 @@ describe('tag compiler', () => {
       tags: [
         { b: 1 },
         { fr: 30 },
+        { fsp: 4 },
         {
           clip: {
             inverse: false,
@@ -133,7 +134,7 @@ describe('tag compiler', () => {
       ],
     };
     expect(compileTag({ t }, 't')).to.deep.equal({
-      t: { t1: 0, t2: 1000, accel: 1, tag: { frz: 30 } },
+      t: { t1: 0, t2: 1000, accel: 1, tag: { frz: 30, fsp: 4 } },
     });
   });
 });
