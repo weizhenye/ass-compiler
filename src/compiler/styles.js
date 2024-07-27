@@ -1,5 +1,3 @@
-import { assign } from '../utils.js';
-
 // same as Aegisub
 // https://github.com/Aegisub/Aegisub/blob/master/src/ass_style.h
 const DEFAULT_STYLE = {
@@ -54,9 +52,9 @@ export function parseStyleColor(color) {
 
 export function compileStyles({ info, style, defaultStyle }) {
   const result = {};
-  const styles = [assign({}, defaultStyle, { Name: 'Default' })].concat(style);
+  const styles = [Object.assign({}, defaultStyle, { Name: 'Default' })].concat(style);
   for (let i = 0; i < styles.length; i++) {
-    const s = assign({}, DEFAULT_STYLE, styles[i]);
+    const s = Object.assign({}, DEFAULT_STYLE, styles[i]);
     // this behavior is same as Aegisub by black-box testing
     if (/^(\*+)Default$/.test(s.Name)) {
       s.Name = 'Default';

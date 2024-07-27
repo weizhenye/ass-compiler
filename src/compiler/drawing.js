@@ -1,5 +1,3 @@
-import { assign } from '../utils.js';
-
 function createCommand(arr) {
   const cmd = {
     type: null,
@@ -131,5 +129,5 @@ export function compileDrawing(rawCommands) {
     )),
   );
 
-  return assign({ instructions, d: toSVGPath(instructions) }, getViewBox(commands));
+  return Object.assign({ instructions, d: toSVGPath(instructions) }, getViewBox(commands));
 }

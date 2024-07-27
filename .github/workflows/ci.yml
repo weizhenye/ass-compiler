@@ -8,21 +8,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
     - name: Use Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
-        node-version: '12.x'
+        node-version: 22
     - name: Install Dependencies
       run: npm i
     - name: Build
       run: npm run build
     - name: Test
-      run: npm test
+      run: npm run cover
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage/lcov.info
+        file: ./coverage/clover.xml
       if: github.event_name == 'push'
       continue-on-error: true

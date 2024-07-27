@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { parseDrawing } from '../../src/parser/drawing.js';
 import { s2b, toSVGPath, compileDrawing } from '../../src/compiler/drawing.js';
 

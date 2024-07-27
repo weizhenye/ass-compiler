@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { decompile, decompileDrawing, decompileTag, decompileText } from '../src/decompiler.js';
 import { compiled, decompiled, compiled2, decompiled2 } from './fixtures/decompiler.js';
 

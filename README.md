@@ -1,12 +1,11 @@
 # ass-compiler
 
-[![GitHub Action](https://github.com/weizhenye/ass-compiler/workflows/CI/badge.svg)](https://github.com/weizhenye/ass-compiler/actions)
-[![Coverage](https://badgen.net/codecov/c/github/weizhenye/ass-compiler?icon=codecov)](https://codecov.io/gh/weizhenye/ass-compiler)
-[![Dependencies](https://badgen.net/david/dep/weizhenye/ass-compiler?icon=https://api.iconify.design/si-glyph:connect-2.svg?color=white)](https://david-dm.org/weizhenye/ass-compiler)
-[![NPM version](https://badgen.net/npm/v/ass-compiler?icon=npm)](https://www.npmjs.com/package/ass-compiler)
-[![License](https://badgen.net/npm/license/ass-compiler?icon=https://api.iconify.design/octicon:law.svg?color=white)](https://github.com/weizhenye/ass-compiler/blob/master/LICENSE)
-[![File size](https://badgen.net/bundlephobia/minzip/ass-compiler?icon=https://api.iconify.design/ant-design:file-zip-outline.svg?color=white)](https://bundlephobia.com/result?p=ass-compiler)
-[![jsDelivr](https://badgen.net/jsdelivr/hits/npm/ass-compiler?icon=https://api.iconify.design/simple-icons:jsdelivr.svg?color=white)](https://www.jsdelivr.com/package/npm/ass-compiler)
+[![GitHub Action](https://img.shields.io/github/actions/workflow/status/weizhenye/ass-compiler/ci.yml?logo=github)](https://github.com/weizhenye/ass-compiler/actions)
+[![Codecov](https://img.shields.io/codecov/c/gh/weizhenye/ass-compiler?logo=codecov)](https://codecov.io/gh/weizhenye/ass-compiler)
+[![License](https://img.shields.io/npm/l/ass-compiler)](https://github.com/weizhenye/ass-compiler/blob/master/LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/ass-compiler?logo=npm)](https://www.npmjs.com/package/ass-compiler)
+[![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/ass-compiler?logo=jsdelivr)](https://www.jsdelivr.com/package/npm/ass-compiler)
+[![File size](https://img.shields.io/bundlejs/size/ass-compiler)](https://bundlephobia.com/result?p=ass-compiler)
 
 Parses and compiles ASS subtitle format to easy-to-use data structure.
 

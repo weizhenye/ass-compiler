@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { parseFormat } from '../../src/parser/format.js';
 import { stylesFormat, eventsFormat } from '../../src/utils.js';
 

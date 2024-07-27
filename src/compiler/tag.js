@@ -1,5 +1,4 @@
 import { compileDrawing } from './drawing.js';
-import { assign } from '../utils.js';
 
 const tTags = [
   'fs', 'fsp', 'clip',
@@ -79,7 +78,7 @@ export function compileTag(tag, key, presets = {}) {
     tags.forEach((t) => {
       const k = Object.keys(t)[0];
       if (~tTags.indexOf(k) && !(k === 'clip' && !t[k].dots)) {
-        assign(compiledTag, compileTag(t, k, presets));
+        Object.assign(compiledTag, compileTag(t, k, presets));
       }
     });
     return { t: { t1, t2, accel, tag: compiledTag } };

@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { parseDialogue } from '../../src/parser/dialogue.js';
 import { compileDialogues } from '../../src/compiler/dialogues.js';
 import { compileStyles } from '../../src/compiler/styles.js';

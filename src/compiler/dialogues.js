@@ -1,5 +1,4 @@
 import { compileText } from './text.js';
-import { assign } from '../utils.js';
 
 export function compileDialogues({ styles, dialogues }) {
   let minLayer = Infinity;
@@ -22,7 +21,7 @@ export function compileDialogues({ styles, dialogues }) {
     });
     const alignment = compiledText.alignment || stl.Alignment;
     minLayer = Math.min(minLayer, dia.Layer);
-    results.push(assign({
+    results.push(Object.assign({
       layer: dia.Layer,
       start: dia.Start,
       end: dia.End,

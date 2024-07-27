@@ -1,6 +1,5 @@
 import { compileDrawing } from './drawing.js';
 import { compileTag } from './tag.js';
-import { assign } from '../utils.js';
 
 const a2an = [
   null, 1, 2, 3,
@@ -11,7 +10,7 @@ const a2an = [
 const globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
 function inheritTag(pTag) {
-  return JSON.parse(JSON.stringify(assign({}, pTag, {
+  return JSON.parse(JSON.stringify(Object.assign({}, pTag, {
     k: undefined,
     kf: undefined,
     ko: undefined,
@@ -59,7 +58,7 @@ export function compileText({ styles, style, parsed, start, end }) {
           fragment.tag.t = fragment.tag.t || [];
           fragment.tag.t.push(compiledTag.t);
         } else {
-          assign(fragment.tag, compiledTag);
+          Object.assign(fragment.tag, compiledTag);
         }
       }
     }
@@ -80,5 +79,5 @@ export function compileText({ styles, style, parsed, start, end }) {
   }
   slices.push(slice);
 
-  return assign({ alignment, slices }, pos, org, move, fade, clip);
+  return Object.assign({ alignment, slices }, pos, org, move, fade, clip);
 }

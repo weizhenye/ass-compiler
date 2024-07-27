@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { parseText } from '../../src/parser/text.js';
 import { compileStyles } from '../../src/compiler/styles.js';
 import { compileText } from '../../src/compiler/text.js';

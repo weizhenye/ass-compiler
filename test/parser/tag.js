@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { parseTag } from '../../src/parser/tag.js';
 
 describe('tag parser', () => {

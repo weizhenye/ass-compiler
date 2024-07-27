@@ -1,8 +1,8 @@
 import { stringifyInfo, stringifyTime, stringifyEffect } from './stringifier.js';
-import { assign, stylesFormat, eventsFormat } from './utils.js';
+import { stylesFormat, eventsFormat } from './utils.js';
 
 export function decompileStyle({ style, tag }) {
-  const obj = assign({}, style, {
+  const obj = Object.assign({}, style, {
     PrimaryColour: `&H${tag.a1}${tag.c1}`,
     SecondaryColour: `&H${tag.a2}${tag.c2}`,
     OutlineColour: `&H${tag.a3}${tag.c3}`,
@@ -117,7 +117,7 @@ export function decompileDialogue(dia, style) {
 export function decompile({ info, width, height, collisions, styles, dialogues }) {
   return [
     '[Script Info]',
-    stringifyInfo(assign({}, info, {
+    stringifyInfo(Object.assign({}, info, {
       PlayResX: width,
       PlayResY: height,
       Collisions: collisions,

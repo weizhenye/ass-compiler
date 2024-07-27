@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { compileTag } from '../../src/compiler/tag.js';
 
 describe('tag compiler', () => {
