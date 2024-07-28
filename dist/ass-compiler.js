@@ -241,24 +241,6 @@
     return dia;
   }
 
-  var assign = Object.assign || (
-    /* istanbul ignore next */
-    function assign(target) {
-      var sources = [], len = arguments.length - 1;
-      while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
-
-      for (var i = 0; i < sources.length; i++) {
-        if (!sources[i]) { continue; }
-        var keys = Object.keys(sources[i]);
-        for (var j = 0; j < keys.length; j++) {
-          // eslint-disable-next-line no-param-reassign
-          target[keys[j]] = sources[i][keys[j]];
-        }
-      }
-      return target;
-    }
-  );
-
   var stylesFormat = ['Name', 'Fontname', 'Fontsize', 'PrimaryColour', 'SecondaryColour', 'OutlineColour', 'BackColour', 'Bold', 'Italic', 'Underline', 'StrikeOut', 'ScaleX', 'ScaleY', 'Spacing', 'Angle', 'BorderStyle', 'Outline', 'Shadow', 'Alignment', 'MarginL', 'MarginR', 'MarginV', 'Encoding'];
   var eventsFormat = ['Layer', 'Start', 'End', 'Style', 'Name', 'MarginL', 'MarginR', 'MarginV', 'Effect', 'Text'];
 
@@ -274,7 +256,7 @@
 
   function parseStyle(text, format) {
     var values = text.match(/Style\s*:\s*(.*)/i)[1].split(/\s*,\s*/);
-    return assign.apply(void 0, [ {} ].concat( format.map(function (fmt, idx) {
+    return Object.assign.apply(Object, [ {} ].concat( format.map(function (fmt, idx) {
       var obj;
 
       return (( obj = {}, obj[fmt] = values[idx], obj ));
@@ -611,11 +593,11 @@
     })
     );
 
-    return assign({ instructions: instructions, d: toSVGPath(instructions) }, getViewBox(commands));
+    return Object.assign({ instructions: instructions, d: toSVGPath(instructions) }, getViewBox(commands));
   }
 
   var tTags = [
-    'fs', 'clip',
+    'fs', 'fsp', 'clip',
     'c1', 'c2', 'c3', 'c4', 'a1', 'a2', 'a3', 'a4', 'alpha',
     'fscx', 'fscy', 'fax', 'fay', 'frx', 'fry', 'frz', 'fr',
     'be', 'blur', 'bord', 'xbord', 'ybord', 'shad', 'xshad', 'yshad' ];
@@ -714,7 +696,7 @@
       tags.forEach(function (t) {
         var k = Object.keys(t)[0];
         if (~tTags.indexOf(k) && !(k === 'clip' && !t[k].dots)) {
-          assign(compiledTag, compileTag(t, k, presets));
+          Object.assign(compiledTag, compileTag(t, k, presets));
         }
       });
       return { t: { t1: t1$3, t2: t2$3, accel: accel, tag: compiledTag } };
@@ -730,7 +712,7 @@
   var globalTags = ['r', 'a', 'an', 'pos', 'org', 'move', 'fade', 'fad', 'clip'];
 
   function inheritTag(pTag) {
-    return JSON.parse(JSON.stringify(assign({}, pTag, {
+    return JSON.parse(JSON.stringify(Object.assign({}, pTag, {
       k: undefined,
       kf: undefined,
       ko: undefined,
@@ -790,7 +772,7 @@
             fragment.tag.t = fragment.tag.t || [];
             fragment.tag.t.push(compiledTag.t);
           } else {
-            assign(fragment.tag, compiledTag);
+            Object.assign(fragment.tag, compiledTag);
           }
         }
       }
@@ -811,7 +793,7 @@
     }
     slices.push(slice);
 
-    return assign({ alignment: alignment, slices: slices }, pos, org, move, fade, clip);
+    return Object.assign({ alignment: alignment, slices: slices }, pos, org, move, fade, clip);
   }
 
   function compileDialogues(ref) {
@@ -838,7 +820,7 @@
       });
       var alignment = compiledText.alignment || stl.Alignment;
       minLayer = Math.min(minLayer, dia.Layer);
-      results.push(assign({
+      results.push(Object.assign({
         layer: dia.Layer,
         start: dia.Start,
         end: dia.End,
@@ -919,9 +901,9 @@
     var defaultStyle = ref.defaultStyle;
 
     var result = {};
-    var styles = [assign({}, defaultStyle, { Name: 'Default' })].concat(style);
+    var styles = [Object.assign({}, defaultStyle, { Name: 'Default' })].concat(style);
     var loop = function ( i ) {
-      var s = assign({}, DEFAULT_STYLE, styles[i]);
+      var s = Object.assign({}, DEFAULT_STYLE, styles[i]);
       // this behavior is same as Aegisub by black-box testing
       if (/^(\*+)Default$/.test(s.Name)) {
         s.Name = 'Default';
@@ -1002,7 +984,7 @@
     var style = ref.style;
     var tag = ref.tag;
 
-    var obj = assign({}, style, {
+    var obj = Object.assign({}, style, {
       PrimaryColour: ("&H" + (tag.a1) + (tag.c1)),
       SecondaryColour: ("&H" + (tag.a2) + (tag.c2)),
       OutlineColour: ("&H" + (tag.a3) + (tag.c3)),
@@ -1138,7 +1120,7 @@
 
     return [
       '[Script Info]',
-      stringifyInfo(assign({}, info, {
+      stringifyInfo(Object.assign({}, info, {
         PlayResX: width,
         PlayResY: height,
         Collisions: collisions,
@@ -1159,7 +1141,5 @@
   exports.decompile = decompile;
   exports.parse = parse;
   exports.stringify = stringify;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
