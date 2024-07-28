@@ -9,6 +9,7 @@
       "ObjectExpression": { "multiline": true, "consistent": true },
       "ObjectPattern": { "multiline": true, "consistent": true }
     }],
+    "prefer-object-spread": 0,
     "import/extensions": ["error", "ignorePackages"],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/prefer-default-export": 0
