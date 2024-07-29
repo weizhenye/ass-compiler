@@ -3,11 +3,17 @@ import replace from 'rollup-plugin-replace';
 
 export default {
   input: 'src/index.js',
-  output: {
-    file: 'dist/ass-compiler.js',
-    format: 'umd',
-    name: 'assCompiler',
-  },
+  output: [
+    {
+      file: 'dist/esm/ass-compiler.js',
+      format: 'esm',
+    },
+    {
+      file: 'dist/ass-compiler.js',
+      format: 'umd',
+      name: 'assCompiler',
+    }
+  ],
   plugins: [
     buble(),
     replace({
