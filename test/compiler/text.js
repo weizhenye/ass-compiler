@@ -95,6 +95,12 @@ describe('text compiler', () => {
       drawing: null,
       dots: { x1: 1, y1: 2, x2: 3, y2: 4 },
     });
+    const test1 = compileText({ styles, style, parsed: parseText('bla bla').parsed });
+    expect(test1.q).to.equal(0);
+    const test2 = compileText({ styles, style, parsed: parseText('{\\q1}bla bla').parsed });
+    expect(test2.q).to.equal(1);
+    const test3 = compileText({ styles, style, parsed: parseText('{\\q1}bla {\\q2}bla').parsed });
+    expect(test3.q).to.equal(2);
   });
 
   it('should compile text with \\r', () => {

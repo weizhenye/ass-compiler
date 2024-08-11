@@ -74,6 +74,7 @@ describe('dialogues compiler', () => {
       },
       effect: null,
       alignment: 2,
+      q: 0,
       slices: [{
         style: 'Default',
         fragments: [{

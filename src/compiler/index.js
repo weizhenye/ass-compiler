@@ -13,6 +13,7 @@ export function compile(text, options = {}) {
     info: tree.info,
     width: tree.info.PlayResX * 1 || null,
     height: tree.info.PlayResY * 1 || null,
+    wrapStyle: /^[0-3]$/.test(tree.info.WrapStyle) ? tree.info.WrapStyle * 1 : 2,
     collisions: tree.info.Collisions || 'Normal',
     styles,
     dialogues: compileDialogues({

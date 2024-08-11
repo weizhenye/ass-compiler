@@ -92,6 +92,7 @@ export function compileStyles({ info, style, defaultStyle }) {
       xshad: s.Shadow,
       yshad: s.Shadow,
       fe: s.Encoding,
+      // TODO: [breaking change] remove `q` from style
       q: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
     };
     result[s.Name] = { style: s, tag };
