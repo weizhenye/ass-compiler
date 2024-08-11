@@ -728,6 +728,7 @@
     var end = ref.end;
 
     var alignment;
+    var q = { q: styles[style].tag.q };
     var pos;
     var org;
     var move;
@@ -754,6 +755,7 @@
       for (var j$1 = 0; j$1 < tags.length; j$1++) {
         var tag$1 = tags[j$1];
         alignment = alignment || a2an[tag$1.a || 0] || tag$1.an;
+        q = compileTag(tag$1, 'q') || q;
         pos = pos || compileTag(tag$1, 'pos');
         org = org || compileTag(tag$1, 'org');
         move = move || compileTag(tag$1, 'move');
@@ -793,7 +795,7 @@
     }
     slices.push(slice);
 
-    return Object.assign({ alignment: alignment, slices: slices }, pos, org, move, fade, clip);
+    return Object.assign({ alignment: alignment, slices: slices }, q, pos, org, move, fade, clip);
   }
 
   function compileDialogues(ref) {
@@ -949,6 +951,7 @@
         xshad: s.Shadow,
         yshad: s.Shadow,
         fe: s.Encoding,
+        // TODO: [breaking change] remove `q` from style
         q: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
       };
       result[s.Name] = { style: s, tag: tag };
@@ -971,6 +974,7 @@
       info: tree.info,
       width: tree.info.PlayResX * 1 || null,
       height: tree.info.PlayResY * 1 || null,
+      wrapStyle: /^[0-3]$/.test(tree.info.WrapStyle) ? tree.info.WrapStyle * 1 : 2,
       collisions: tree.info.Collisions || 'Normal',
       styles: styles,
       dialogues: compileDialogues({
