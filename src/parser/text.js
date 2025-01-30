@@ -2,7 +2,7 @@ import { parseDrawing } from './drawing.js';
 import { parseTags } from './tags.js';
 
 export function parseText(text) {
-  const pairs = text.split(/{([^{}]*?)}/);
+  const pairs = text.split(/{(.*?)}/);
   const parsed = [];
   if (pairs[0].length) {
     parsed.push({ tags: [], text: pairs[0], drawing: [] });

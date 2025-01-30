@@ -64,4 +64,12 @@ describe('text parser', () => {
   it('should detect whether it is drawing', () => {
     expect(parseText('{\\p1\\p0}m 0 0 l 1 0').parsed[0].drawing).to.deep.equal([]);
   });
+
+  it('should handle mismatched brackets', () => {
+    expect(parseText('{ a { b }c')).to.deep.equal({
+      raw: '{ a { b }c',
+      combined: 'c',
+      parsed: [{ tags: [], text: 'c', drawing: [] }],
+    });
+  });
 });
