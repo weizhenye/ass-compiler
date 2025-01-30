@@ -4,17 +4,18 @@ import { compileStyles } from './styles.js';
 
 export function compile(text, options = {}) {
   const tree = parse(text);
+  const info = Object.assign(options.defaultInfo || {}, tree.info);
   const styles = compileStyles({
-    info: tree.info,
+    info,
     style: tree.styles.style,
     defaultStyle: options.defaultStyle || {},
   });
   return {
-    info: tree.info,
-    width: tree.info.PlayResX * 1 || null,
-    height: tree.info.PlayResY * 1 || null,
-    wrapStyle: /^[0-3]$/.test(tree.info.WrapStyle) ? tree.info.WrapStyle * 1 : 2,
-    collisions: tree.info.Collisions || 'Normal',
+    info,
+    width: info.PlayResX * 1 || null,
+    height: info.PlayResY * 1 || null,
+    wrapStyle: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
+    collisions: info.Collisions || 'Normal',
     styles,
     dialogues: compileDialogues({
       styles,

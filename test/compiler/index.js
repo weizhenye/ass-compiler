@@ -18,4 +18,17 @@ describe('ASS compiler', () => {
     expect(styles).to.have.property('Default');
     expect(dialogues).to.be.lengthOf(1);
   });
+
+  it('should support options', () => {
+    const { info, width, height } = compile(text, {
+      defaultInfo: {
+        PlayResX: 1280,
+        PlayResY: 720,
+      },
+    });
+    expect(info.PlayResX).to.equal(1280);
+    expect(info.PlayResY).to.equal(720);
+    expect(width).to.equal(1280);
+    expect(height).to.equal(720);
+  });
 });
