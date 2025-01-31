@@ -87,7 +87,7 @@ describe('text compiler', () => {
     expect(alignment).to.equal(1);
     expect(pos).to.deep.equal({ x: 1, y: 2 });
     expect(org).to.deep.equal({ x: 1, y: 2 });
-    expect(move).to.deep.equal({ x1: 1, y1: 2, x2: 3, y2: 4, t1: 0, t2: 0 });
+    expect(move).to.deep.equal(undefined);
     expect(fade).to.deep.equal({ type: 'fad', t1: 1, t2: 2 });
     expect(clip).to.deep.equal({
       inverse: false,
@@ -101,6 +101,13 @@ describe('text compiler', () => {
     expect(test2.q).to.equal(1);
     const test3 = compileText({ styles, style, parsed: parseText('{\\q1}bla {\\q2}bla').parsed });
     expect(test3.q).to.equal(2);
+  });
+
+  it('should only respect the first \\pos or \\move tag', () => {
+    const { parsed } = parseText('{\\move(1,2,3,4)\\pos(5,6)}bla');
+    const { pos, move } = compileText({ styles, style, parsed });
+    expect(move).to.deep.equal({ x1: 1, y1: 2, x2: 3, y2: 4, t1: 0, t2: 0 });
+    expect(pos).to.deep.equal(undefined);
   });
 
   it('should compile text with \\r', () => {

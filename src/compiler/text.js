@@ -45,9 +45,13 @@ export function compileText({ styles, style, parsed, start, end }) {
       const tag = tags[j];
       alignment = alignment || a2an[tag.a || 0] || tag.an;
       q = compileTag(tag, 'q') || q;
-      pos = pos || compileTag(tag, 'pos');
+      if (!move) {
+        pos = pos || compileTag(tag, 'pos');
+      }
       org = org || compileTag(tag, 'org');
-      move = move || compileTag(tag, 'move');
+      if (!pos) {
+        move = move || compileTag(tag, 'move');
+      }
       fade = fade || compileTag(tag, 'fade') || compileTag(tag, 'fad');
       clip = compileTag(tag, 'clip') || clip;
       const key = Object.keys(tag)[0];
