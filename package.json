@@ -1,6 +1,6 @@
 {
   "name": "ass-compiler",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "description": "Parses and compiles ASS subtitle format to easy-to-use data structure.",
   "main": "dist/esm/ass-compiler.js",

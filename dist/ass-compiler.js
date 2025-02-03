@@ -178,7 +178,7 @@
   }
 
   function parseText(text) {
-    var pairs = text.split(/{([^{}]*?)}/);
+    var pairs = text.split(/{(.*?)}/);
     var parsed = [];
     if (pairs[0].length) {
       parsed.push({ tags: [], text: pairs[0], drawing: [] });
@@ -314,7 +314,10 @@
   }
 
   function stringifyInfo(info) {
-    return Object.keys(info).map(function (key) { return (key + ": " + (info[key])); }).join('\n');
+    return Object.keys(info)
+      .filter(function (key) { return info[key] !== null; })
+      .map(function (key) { return (key + ": " + (info[key])); })
+      .join('\n');
   }
 
   function pad00(n) {
@@ -756,9 +759,13 @@
         var tag$1 = tags[j$1];
         alignment = alignment || a2an[tag$1.a || 0] || tag$1.an;
         q = compileTag(tag$1, 'q') || q;
-        pos = pos || compileTag(tag$1, 'pos');
+        if (!move) {
+          pos = pos || compileTag(tag$1, 'pos');
+        }
         org = org || compileTag(tag$1, 'org');
-        move = move || compileTag(tag$1, 'move');
+        if (!pos) {
+          move = move || compileTag(tag$1, 'move');
+        }
         fade = fade || compileTag(tag$1, 'fade') || compileTag(tag$1, 'fad');
         clip = compileTag(tag$1, 'clip') || clip;
         var key = Object.keys(tag$1)[0];
@@ -965,17 +972,18 @@
     if ( options === void 0 ) options = {};
 
     var tree = parse(text);
+    var info = Object.assign(options.defaultInfo || {}, tree.info);
     var styles = compileStyles({
-      info: tree.info,
+      info: info,
       style: tree.styles.style,
       defaultStyle: options.defaultStyle || {},
     });
     return {
-      info: tree.info,
-      width: tree.info.PlayResX * 1 || null,
-      height: tree.info.PlayResY * 1 || null,
-      wrapStyle: /^[0-3]$/.test(tree.info.WrapStyle) ? tree.info.WrapStyle * 1 : 2,
-      collisions: tree.info.Collisions || 'Normal',
+      info: info,
+      width: info.PlayResX * 1 || null,
+      height: info.PlayResY * 1 || null,
+      wrapStyle: /^[0-3]$/.test(info.WrapStyle) ? info.WrapStyle * 1 : 2,
+      collisions: info.Collisions || 'Normal',
       styles: styles,
       dialogues: compileDialogues({
         styles: styles,
