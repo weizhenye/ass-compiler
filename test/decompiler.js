@@ -130,6 +130,7 @@ describe('ASS decompiler', () => {
   describe('text decompiler', () => {
     it('should put \\r to the beginning of tags', () => {
       expect(decompileText({
+        style: 'Default',
         alignment: 1,
         slices: [{
           style: 'Default',
@@ -147,6 +148,38 @@ describe('ASS decompiler', () => {
       }, {
         Alignment: 1,
       })).to.equal('{\\t(0,1000,1,\\1c&HFF&)}Hello{\\rNondefault\\t(1000,2000,1,\\1c&HFFFF&)}World');
+    });
+
+    it('should not ignore the first \\r with different style', () => {
+      expect(decompileText({
+        style: 'Base',
+        slices: [
+          {
+            style: 'Base',
+            fragments: [],
+          },
+          {
+            style: 'Highlight',
+            fragments: [
+              {
+                tag: {},
+                text: 'Maine',
+                drawing: null,
+              },
+            ],
+          },
+          {
+            style: 'Base',
+            fragments: [
+              {
+                tag: {},
+                text: ' apne',
+                drawing: null,
+              },
+            ],
+          },
+        ],
+      }, {})).to.equal('{\\rHighlight}Maine{\\r} apne');
     });
   });
 });
