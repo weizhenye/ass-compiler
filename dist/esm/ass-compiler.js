@@ -1078,9 +1078,10 @@ function decompileText(dia, style) {
     .map(function (slice, idx) {
       var sliceCopy = JSON.parse(JSON.stringify(slice));
       var tag = {};
-      if (idx) {
+      if (idx || slice.style !== dia.style) {
         tag.r = slice.style === dia.style ? '' : slice.style;
-      } else {
+      }
+      if (!idx) {
         if (style.Alignment !== dia.alignment) {
           tag.an = dia.alignment;
         }
